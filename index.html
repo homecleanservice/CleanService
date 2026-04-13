@@ -410,10 +410,9 @@
         <div class="nav-links">
             <a href="#about" class="nav-item">About us</a>
             <a href="#services" class="nav-item">Services</a>
-            <a href="#" class="nav-item" onclick="toggleUlasanSlide(event)">Ulasan</a>
-            <a href="#" class="nav-item" onclick="bukaInbox(event)">Pesan</a>
+            <a href="#" class="nav-item" onclick="toggleUlasanSlide(event)">Rating</a>
+            <a href="#" class="nav-item" onclick="bukaInbox(event)">Massage</a>
             <a href="#" class="nav-item">Contact us</a>
-            <button class="btn-book nav-item" id="btn-book">Book cleaning •</button>
         </div>
     </nav>
 
@@ -436,7 +435,7 @@
         <div class="services-header fade-in"><h2>DETAIL LAYANAN KEBERSIHAN RUMAH</h2><p style="margin-bottom: 30px;">Klik pada kartu untuk memilih ukuran rumah Anda.</p></div>
         <div class="services-grid">
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">01</div><img src="art.jpeg" class="service-img"><h3>ART</h3><p class="short-desc">Bantuan rumah tangga harian...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
-            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">02</div><img src="Open House Helper.jpeg" class="service-img"><h3>Open House Helper</h3><p class="short-desc">Dukungan profesional acara...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">02</div><img src="Open House Helper.jpeg" class="service-img"><h3>Open House Helper</h3><p class="short-desc">Dukungan profesional acara...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">03</div><img src="Vacuum.jpeg" class="service-img"><h3>Vacuum</h3><p class="short-desc">Pembersihan debu & tungau...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">04</div><img src="Garden.jpeg" class="service-img"><h3>Garden</h3><p class="short-desc">Perawatan taman & lanskap...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">05</div><img src="Aquarium.jpeg" class="service-img"><h3>Aquarium</h3><p class="short-desc">Kuras & cek kualitas air...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
@@ -474,10 +473,8 @@
             <div class="payment-sheet" id="paymentSheet">
                 <div class="payment-header">Metode pembayaran<span class="payment-close" onclick="tutupMetodePembayaran()">✕</span></div>
                 <div class="payment-list">
-                    <div class="payment-option" onclick="pilihMetode('OVO')"><div class="payment-option-left">🟣 OVO</div><div class="payment-radio" id="radio-OVO"></div></div>
                     <div class="payment-option" onclick="pilihMetode('DANA')"><div class="payment-option-left">🔵 DANA</div><div class="payment-radio" id="radio-DANA"></div></div>
                     <div class="payment-option" onclick="pilihMetode('Gopay')"><div class="payment-option-left">🟢 Gopay</div><div class="payment-radio" id="radio-Gopay"></div></div>
-                    <div class="payment-option" onclick="pilihMetode('ShopeePay')"><div class="payment-option-left">🟠 ShopeePay</div><div class="payment-radio" id="radio-ShopeePay"></div></div>
                     <div class="payment-option" onclick="pilihMetode('QRIS')"><div class="payment-option-left">📱 QRIS</div><div class="payment-radio" id="radio-QRIS"></div></div>
                     <div class="payment-option" onclick="pilihMetode('Cash On Delivery (COD)')"><div class="payment-option-left">📦 Cash On Delivery (COD)</div><div class="payment-radio" id="radio-Cash On Delivery (COD)"></div></div>
                 </div>
