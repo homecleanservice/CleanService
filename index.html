@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Clean Service</title>
+    <style>
+        /* ================= RESET & FONT ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #6D805F; 
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ================= NAVBAR ================= */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        nav.scrolled {
+            background-color: rgba(109, 128, 95, 0.95);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-links a, .btn-book {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.2s ease-in-out;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: transparent;
+            cursor: pointer;
+            border: none;
+        }
+
+        .nav-active {
+            background-color: #2D3A26 !important;
+            color: #fff !important;
+        }
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #1a1a1a;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+
+        /* ================= ABOUT SECTION ================= */
+        .about-section {
+            display: flex;
+            padding: 100px 50px;
+            background-color: #6D805F;
+            gap: 50px;
+        }
+
+        .about-text { flex: 1; }
+        .about-text h2 { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; }
+        .about-text p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px; }
+
+        .about-images { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .about-images img { width: 100%; height: 250px; object-fit: cover; border-radius: 15px; }
+
+        /* ================= SERVICES SECTION ================= */
+        .services-section {
+            padding: 100px 50px;
+            background-color: #7B8D6C;
+            text-align: center;
+        }
+
+        .services-header h2 { font-size: 3rem; font-weight: 900; margin-bottom: 50px; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background-color: #4C5D42;
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: left;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: scale(1.02);
+            border-color: #fff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-card .badge {
+            background: #fff;
+            color: #1a1a1a;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .service-img {
+            width: 100%;
+            height: 180px;
+            background-color: #555;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .service-card h3 { font-size: 1.8rem; margin-bottom: 10px; }
+        .short-desc { font-size: 1rem; color: #ddd; }
+        
+        .bubble-options {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .service-card.expanded .bubble-options {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 15px;
+        }
+
+        .service-card.expanded {
+            background-color: #2D3A26;
+        }
+
+        .size-bubble {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 50px; 
+            font-weight: bold;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .size-bubble:hover {
+            background-color: #fff;
+            color: #2D3A26;
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ================= MODAL BASE ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tiktok-checkout, .rincian-box, .staff-box, .chat-box, .inbox-box {
+            background: #f5f5f5;
+            width: 100%;
+            max-width: 450px;
+            height: 90vh;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .tc-header {
+            background: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .tc-back { cursor: pointer; margin-right: 15px; font-size: 1.2rem; }
+
+        /* ... CHECKOUT & RINCIAN ... */
+        .tc-location-wrapper { background: #fff; border-bottom: 3px dashed #ff6b6b; margin-bottom: 10px; display: flex; flex-direction: column; }
+        .tc-location { padding: 15px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
+        .tc-location:hover { background: #fafafa; }
+        .tc-location strong { display: block; font-size: 0.95rem; margin-bottom: 3px; color: #1a1a1a; }
+        .tc-location-text { flex: 1; padding-right: 15px; color: #555; }
+        
+        .address-edit-box { display: none; padding: 0 15px 15px 15px; background: #fff; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .address-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.85rem; resize: vertical; margin-bottom: 10px; outline: none; }
+        .address-input:focus { border-color: #ee4d2d; }
+        .btn-save-address { background: #ee4d2d; color: #fff; border: none; padding: 8px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+
+        .tc-items { flex: 1; overflow-y: auto; background: #fff; padding: 0 15px; }
+        .tc-store-name { padding: 15px 0; font-weight: bold; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 5px; }
+        .item-card { display: flex; padding: 15px 0; border-bottom: 1px solid #eee; gap: 15px; }
+        .item-img { width: 70px; height: 70px; background: #e0e0e0; border-radius: 8px; object-fit: cover; }
+        .item-details { flex: 1; }
+        .item-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 5px; }
+        .item-price { color: #ee4d2d; font-weight: bold; font-size: 1rem; margin-bottom: 10px; }
+        
+        .item-qty-control { display: flex; align-items: center; justify-content: flex-end; gap: 15px; }
+        .qty-btn { background: #f5f5f5; border: 1px solid #ddd; width: 25px; height: 25px; display: flex; justify-content: center; align-items: center; border-radius: 4px; cursor: pointer; font-weight: bold; user-select: none; transition: background 0.2s, transform 0.1s; }
+        .qty-btn:active { background: #e0e0e0; transform: scale(0.9); }
+
+        .tc-bottom-bar, .rincian-bottom-bar, .staff-bottom-bar { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; }
+        .tc-total-section { text-align: left; }
+        .tc-total-label { font-size: 0.8rem; color: #666; }
+        .tc-total-price { font-size: 1.2rem; color: #ee4d2d; font-weight: bold; }
+
+        .btn-pesan, .btn-konfirmasi, .btn-pilih-staff { background: #00a650; color: #fff; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+        .btn-pesan:hover, .btn-konfirmasi:hover, .btn-pilih-staff:hover { background: #008f45; transform: scale(1.05); }
+        .btn-konfirmasi { background: #ee4d2d; }
+        .btn-konfirmasi:hover { background: #d74022; }
+
+        /* ================= ULASAN PANEL ================= */
+        .ulasan-panel { position: fixed; top: 0; right: -100%; width: 400px; max-width: 100vw; height: 100vh; background-color: #f5f5f5; z-index: 3000; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1); box-shadow: -5px 0 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; color: #333; }
+        .ulasan-panel.open { right: 0; }
+        .ulasan-header { background: #2D3A26; color: #fff; padding: 20px; display: flex; align-items: center; gap: 15px; font-size: 1.2rem; font-weight: bold; }
+        .ulasan-close-btn { cursor: pointer; font-size: 1.5rem; transition: transform 0.2s; }
+        .ulasan-body { padding: 20px; overflow-y: auto; flex: 1; }
+        .review-card { background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #7B8D6C; }
+
+        /* ================= RINCIAN PESANAN ================= */
+        .rincian-body-scroll { flex: 1; overflow-y: auto; }
+        .rincian-section-block { background: #fff; margin-bottom: 10px; padding: 15px; }
+        .rincian-item-card-row { display: flex; gap: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; margin-bottom: 15px; }
+        .rincian-item-card-row img { width: 60px; height: 60px; border-radius: 8px; background: #e0e0e0; object-fit: cover; }
+        .rincian-item-info { flex: 1; }
+        .rincian-item-price-qty { display: flex; justify-content: space-between; font-size: 0.9rem; color: #555; }
+        .rincian-shipping-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .shipping-left { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 0.95rem; color: #333;}
+        .shipping-date { font-size: 0.85rem; color: #00a650; margin-left: 28px; }
+        .rincian-message-box { display: flex; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 15px; }
+        .rincian-message-box label { font-size: 0.9rem; color: #333; font-weight: 500; white-space: nowrap;}
+        .rincian-message-box input { flex: 1; border: none; background: #f9f9f9; padding: 8px 12px; border-radius: 5px; font-size: 0.85rem; outline: none; }
+        .rincian-payment-row { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 500; font-size: 0.95rem; color: #333; }
+        .payment-selected { color: #ee4d2d; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;}
+
+        /* ================= METODE PEMBAYARAN ================= */
+        .payment-sheet { position: absolute; bottom: -100%; left: 0; width: 100%; background: #f5f5f5; border-radius: 15px 15px 0 0; transition: bottom 0.3s ease-out; display: flex; flex-direction: column; height: 75%; z-index: 2500; }
+        .payment-sheet.open { bottom: 0; }
+        .payment-header { background: #fff; padding: 15px 20px; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; position: relative; border-radius: 15px 15px 0 0; }
+        .payment-close { position: absolute; right: 20px; top: 15px; cursor: pointer; }
+        .payment-list { flex: 1; overflow-y: auto; background: #fff; padding: 0 20px; }
+        .payment-option { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
+        .payment-option:hover { background: #fafafa; }
+        .payment-option-left { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; color: #333; font-weight: 500; }
+        .payment-radio { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: border-color 0.2s; }
+        .payment-radio.active { border-color: #ee4d2d; }
+        .payment-radio.active::after { content: ''; width: 10px; height: 10px; background: #ee4d2d; border-radius: 50%; transition: all 0.2s;}
+        .payment-footer { background: #fff; padding: 15px 20px; border-top: 1px solid #eee; }
+        .btn-lanjutkan { width: 100%; background: #ee4d2d; color: #fff; border: none; padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: transform 0.2s;}
+        .btn-lanjutkan:active { transform: scale(0.95); }
+
+        /* ================= PROFIL STAFF ================= */
+        .staff-body-scroll { flex: 1; overflow-y: auto; background: #fff; padding: 20px 0; display: flex; flex-direction: column; }
+        .staff-instruction { text-align: center; padding: 0 20px 10px 20px; color: #666; font-size: 0.95rem; }
+        .staff-slider { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 20px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .staff-slider::-webkit-scrollbar { display: none; } 
+        .staff-card { min-width: 160px; scroll-snap-align: center; background: #fff; border-radius: 12px; padding: 20px 15px; text-align: center; border: 2px solid #eee; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; }
+        .staff-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .staff-card.selected { border-color: #00a650; background: #f0fdf4; }
+        .staff-card.selected .staff-name { color: #00a650; }
+        .staff-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; border: 3px solid #f5f5f5; }
+        .staff-name { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: #333; }
+        .staff-role { font-size: 0.8rem; color: #666; margin-bottom: 8px; background: #eee; padding: 3px 8px; border-radius: 50px; }
+        .staff-rating { font-size: 0.9rem; color: #ffc107; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+
+        /* ================= CHAT PEKERJA ================= */
+        .chat-box { background-color: #efeae2; position: relative; }
+        .chat-main-header { background: #008069; color: #fff; padding: 12px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
+        .chat-back { cursor: pointer; font-size: 1.2rem; }
+        .chat-header-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .chat-header-info { flex: 1; }
+        .chat-header-name { font-weight: bold; font-size: 1.05rem; }
+        .chat-header-status { font-size: 0.8rem; color: #d9fdd3; }
+        .chat-actions { display: flex; gap: 20px; font-size: 1.2rem; cursor: pointer; }
+
+        .chat-body-area { flex: 1; padding: 20px 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-size: cover; }
+        .chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 10px; font-size: 0.95rem; position: relative; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .chat-bubble.left { background: #fff; align-self: flex-start; border-top-left-radius: 0; }
+        .chat-bubble.right { background: #d9fdd3; align-self: flex-end; border-top-right-radius: 0; }
+        .chat-time { font-size: 0.7rem; color: #888; float: right; margin-top: 5px; margin-left: 10px; }
+
+        .chat-input-wrapper { padding: 10px; background: transparent; display: flex; align-items: flex-end; gap: 10px; position: relative; }
+        .chat-input-pill { flex: 1; background: #fff; border-radius: 25px; padding: 10px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .chat-input-pill input { flex: 1; border: none; outline: none; font-size: 1rem; background: transparent; }
+        .chat-icon-btn { cursor: pointer; font-size: 1.3rem; color: #888; transition: color 0.2s; }
+        .chat-icon-btn:hover { color: #008069; }
+        .btn-send-voice { width: 45px; height: 45px; background: #00a884; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 1.2rem; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: none; transition: transform 0.2s; }
+        .btn-send-voice:active { transform: scale(0.9); }
+
+        .attachment-popup { position: absolute; bottom: 70px; left: 10px; right: 65px; background: #fff; border-radius: 15px; padding: 20px; display: none; grid-template-columns: repeat(3, 1fr); gap: 20px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20; }
+        @keyframes popUp { from { opacity: 0; transform: translateY(20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .attach-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+        .attach-item span { font-size: 0.8rem; color: #555; }
+        .attach-icon-circle { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 1.5rem; box-shadow: 0 3px 6px rgba(0,0,0,0.15); transition: transform 0.2s; }
+        .attach-item:hover .attach-icon-circle { transform: scale(1.1); }
+        .bg-doc { background: #5f66cd; } .bg-cam { background: #d3396d; } .bg-gal { background: #bf59cf; } .bg-aud { background: #e85b2e; } .bg-loc { background: #11a65c; } .bg-con { background: #0b93d6; }
+
+        /* ================= INBOX PESAN ================= */
+        .inbox-header { background: #008069; color: #fff; padding: 15px 20px; display: flex; align-items: center; font-weight: bold; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
+        .inbox-list { flex: 1; overflow-y: auto; background: #fff; }
+        .inbox-item { display: flex; padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; gap: 15px; }
+        .inbox-item:hover { background: #f5f5f5; }
+        .inbox-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .inbox-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .inbox-name-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .inbox-name { font-weight: bold; font-size: 1.05rem; color: #1a1a1a; }
+        .inbox-time { font-size: 0.8rem; color: #888; }
+        .inbox-msg-row { display: flex; justify-content: space-between; align-items: center; }
+        .inbox-msg { font-size: 0.9rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+        .inbox-badge { background: #25D366; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 0.75rem; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">🏡 Home Clean</div>
+        <div class="nav-links">
+            <a href="#about" class="nav-item">About us</a>
+            <a href="#services" class="nav-item">Services</a>
+            <a href="#" class="nav-item" onclick="toggleUlasanSlide(event)">Ulasan</a>
+            <a href="#" class="nav-item" onclick="bukaInbox(event)">Pesan</a>
+            <a href="#" class="nav-item">Contact us</a>
+            <button class="btn-book nav-item" id="btn-book">Book cleaning •</button>
+        </div>
+    </nav>
+
+    <div class="ulasan-panel" id="ulasanSlide">
+        <div class="ulasan-header"><span class="ulasan-close-btn" onclick="toggleUlasanSlide(event)">❮</span> Ulasan Pelanggan</div>
+        <div class="ulasan-body">
+            <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-text">"Layanan sangat memuaskan! Pekerja datang tepat waktu."</div><div class="review-author">- Amanda R.</div></div>
+            <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-text">"Jasa Vacuum-nya luar biasa."</div><div class="review-author">- Budi Santoso</div></div>
+        </div>
+    </div>
+
+    <header class="hero"><div class="hero-content fade-in"><h1>HOME CLEAN</h1><div class="hero-subtitle">lingkungan nyaman, anda aman hanya dengan satu kali klik</div></div></header>
+
+    <section class="about-section" id="about">
+        <div class="about-text fade-in"><h2>HOME CLEAN</h2><p>Platform layanan jasa kebersihan profesional dengan tenaga ahli terlatih, peralatan modern, dan sistem pemesanan praktis.</p></div>
+        <div class="about-images fade-in"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070"></div>
+    </section>
+
+    <section class="services-section" id="services">
+        <div class="services-header fade-in"><h2>DETAIL LAYANAN KEBERSIHAN RUMAH</h2><p style="margin-bottom: 30px;">Klik pada kartu untuk memilih ukuran rumah Anda.</p></div>
+        <div class="services-grid">
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">01</div><img src="https://placehold.co/400x200/444/fff?text=Layanan+ART" class="art.jpeg"><h3>ART</h3><p class="short-desc">Bantuan rumah tangga harian...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">02</div><img src="https://placehold.co/400x200/444/fff?text=Open+House+Helper" class="service-img"><h3>Open House Helper</h3><p class="short-desc">Dukungan profesional acara...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">03</div><img src="https://placehold.co/400x200/444/fff?text=Vacuum+Service" class="service-img"><h3>Vacuum</h3><p class="short-desc">Pembersihan debu & tungau...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">04</div><img src="https://placehold.co/400x200/444/fff?text=Garden+Service" class="service-img"><h3>Garden</h3><p class="short-desc">Perawatan taman & lanskap...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">05</div><img src="https://placehold.co/400x200/444/fff?text=Aquarium+Service" class="service-img"><h3>Aquarium</h3><p class="short-desc">Kuras & cek kualitas air...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">06</div><img src="https://placehold.co/400x200/444/fff?text=Deep+Cleaning" class="service-img"><h3>Cleaning Service</h3><p class="short-desc">Pembersihan menyeluruh mesin...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">1. RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">2. RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">3. RUMAH BESAR</div></div></div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="tiktok-checkout">
+            <div class="tc-header"><span class="tc-back" onclick="closeModal()">❮</span><span>Ringkasan Pesanan</span></div>
+            <div class="tc-location-wrapper">
+                <div class="tc-location" onclick="toggleAddressBox()"><div class="tc-location-text"><strong>📍 Alamat Pengguna</strong><span id="displayAddress">Jl. Jendral Sudirman No.123...</span></div></div>
+                <div class="address-edit-box" id="addressEditBox"><textarea id="inputAddress" class="address-input" rows="3">Jl. Jendral Sudirman No.123...</textarea><button class="btn-save-address" onclick="saveAddress()">Simpan</button></div>
+            </div>
+            <div class="tc-items" id="itemList"><div class="tc-store-name">🏪 Home Clean Official Store</div></div>
+            <div class="tc-bottom-bar"><div class="tc-total-section"><div class="tc-total-label">Total</div><div class="tc-total-price" id="totalPrice">Rp0</div></div><button class="btn-pesan" onclick="tampilkanRincian()">Buat Pesanan</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="rincianModal">
+        <div class="rincian-box">
+            <div class="tc-header"><span class="tc-back" onclick="kembaliKeCheckout()">❮</span><span>Rincian Pesanan</span></div>
+            <div class="rincian-body-scroll">
+                <div class="rincian-section-block" style="border-bottom: 3px dashed #ff6b6b;"><div style="font-weight: bold;">📍 Alamat Pengiriman</div><div id="rincianAlamatText"></div></div>
+                <div class="rincian-section-block">
+                    <div class="tc-store-name">🏪 Home Clean Official Store</div>
+                    <div id="rincianDaftarItem"></div>
+                    <div class="rincian-shipping-row"><div><div class="shipping-left">🚚 Pengiriman Standar</div><div class="shipping-date">Pesanan Sampai 14 Apr - 16 Apr</div></div><div style="font-weight:bold;">Rp0</div></div>
+                    <div class="rincian-message-box"><label>Pesan:</label><input type="text" placeholder="(Opsional) Tinggalkan pesan ke penjual"></div>
+                </div>
+                <div class="rincian-section-block"><div class="rincian-payment-row" onclick="bukaMetodePembayaran()"><div>Metode pembayaran</div><div class="payment-selected"><span id="selectedPaymentText">Pilih Metode</span> ❯</div></div></div>
+            </div>
+            <div class="rincian-bottom-bar"><div class="tc-total-section"><div class="tc-total-label">Subtotal</div><div class="tc-total-price" id="rincianTotalBiaya">Rp0</div></div><button class="btn-konfirmasi" onclick="bukaProfilStaff()">Buat Pesanan</button></div>
+
+            <div class="payment-sheet" id="paymentSheet">
+                <div class="payment-header">Metode pembayaran<span class="payment-close" onclick="tutupMetodePembayaran()">✕</span></div>
+                <div class="payment-list">
+                    <div class="payment-option" onclick="pilihMetode('OVO')"><div class="payment-option-left">🟣 OVO</div><div class="payment-radio" id="radio-OVO"></div></div>
+                    <div class="payment-option" onclick="pilihMetode('DANA')"><div class="payment-option-left">🔵 DANA</div><div class="payment-radio" id="radio-DANA"></div></div>
+                    <div class="payment-option" onclick="pilihMetode('Gopay')"><div class="payment-option-left">🟢 Gopay</div><div class="payment-radio" id="radio-Gopay"></div></div>
+                    <div class="payment-option" onclick="pilihMetode('ShopeePay')"><div class="payment-option-left">🟠 ShopeePay</div><div class="payment-radio" id="radio-ShopeePay"></div></div>
+                    <div class="payment-option" onclick="pilihMetode('QRIS')"><div class="payment-option-left">📱 QRIS</div><div class="payment-radio" id="radio-QRIS"></div></div>
+                    <div class="payment-option" onclick="pilihMetode('Cash On Delivery (COD)')"><div class="payment-option-left">📦 Cash On Delivery (COD)</div><div class="payment-radio" id="radio-Cash On Delivery (COD)"></div></div>
+                </div>
+                <div class="payment-footer"><button class="btn-lanjutkan" onclick="simpanMetodePembayaran()">Lanjutkan</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="staffModal">
+        <div class="staff-box">
+            <div class="tc-header"><span class="tc-back" onclick="kembaliKeRincian()">❮</span><span>Profil Pekerja Kami</span></div>
+            <div class="staff-body-scroll">
+                <div class="staff-instruction">Pilih satu staff profesional kami untuk melayani Anda hari ini. Geser untuk melihat lainnya.</div>
+                <div class="staff-slider">
+                    <div class="staff-card" onclick="pilihStaffPekerja(this, 'Sarah')"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&h=150&fit=crop" class="staff-photo"><div class="staff-name">Sarah</div><div class="staff-role">Spesialis ART</div><div class="staff-rating">⭐ 4.9 <span style="color:#999; font-size:0.8rem; font-weight:normal;">(120 review)</span></div></div>
+                    <div class="staff-card" onclick="pilihStaffPekerja(this, 'Budi')"><img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=150&h=150&fit=crop" class="staff-photo"><div class="staff-name">Budi</div><div class="staff-role">Ahli Vacuum</div><div class="staff-rating">⭐ 4.8 <span style="color:#999; font-size:0.8rem; font-weight:normal;">(95 review)</span></div></div>
+                    <div class="staff-card" onclick="pilihStaffPekerja(this, 'Siti')"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&h=150&fit=crop" class="staff-photo"><div class="staff-name">Siti</div><div class="staff-role">Spesialis Kitchen</div><div class="staff-rating">⭐ 5.0 <span style="color:#999; font-size:0.8rem; font-weight:normal;">(210 review)</span></div></div>
+                    <div class="staff-card" onclick="pilihStaffPekerja(this, 'Andi')"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&fit=crop" class="staff-photo"><div class="staff-name">Andi</div><div class="staff-role">Deep Cleaning</div><div class="staff-rating">⭐ 4.7 <span style="color:#999; font-size:0.8rem; font-weight:normal;">(88 review)</span></div></div>
+                </div>
+            </div>
+            <div class="staff-bottom-bar"><div style="flex:1; margin-right: 15px;"><div style="font-size: 0.8rem; color: #666;">Staff Terpilih:</div><div style="font-size: 1rem; font-weight: bold; color: #1a1a1a;" id="namaStaffTerpilih">- Belum Dipilih -</div></div><button class="btn-pilih-staff" onclick="selesaikanPesananFinal()">Konfirmasi</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="chatModal">
+        <div class="chat-box">
+            <div class="chat-main-header">
+                <span class="chat-back" onclick="tutupChat()">❮</span>
+                <img src="" id="chatProfilImage" class="chat-header-photo">
+                <div class="chat-header-info"><div class="chat-header-name" id="chatProfilName">Nama Staff</div><div class="chat-header-status">Online</div></div>
+                <div class="chat-actions"><span>📹</span> <span>📞</span> <span>⋮</span></div>
+            </div>
+            <div class="chat-body-area" id="chatBodyArea">
+                <div class="chat-bubble left" style="align-self: center; background: #e2e8f0; border-radius: 10px; font-size:0.8rem; color:#555;">Pesanan Dikonfirmasi. Staff sedang menuju lokasi.</div>
+                <div class="chat-bubble left" id="chatGreetingMsg">Halo! Saya sudah menerima pesanan Anda dan segera meluncur ke lokasi. Ada instruksi khusus?<span class="chat-time">10:00</span></div>
+            </div>
+            <div class="attachment-popup" id="attachmentMenu">
+                <div class="attach-item"><div class="attach-icon-circle bg-doc">📄</div><span>Dokumen</span></div>
+                <div class="attach-item"><div class="attach-icon-circle bg-cam">📷</div><span>Kamera</span></div>
+                <div class="attach-item"><div class="attach-icon-circle bg-gal">🖼️</div><span>Galeri</span></div>
+                <div class="attach-item"><div class="attach-icon-circle bg-aud">🎵</div><span>Audio</span></div>
+                <div class="attach-item"><div class="attach-icon-circle bg-loc">📍</div><span>Lokasi</span></div>
+                <div class="attach-item"><div class="attach-icon-circle bg-con">👤</div><span>Kontak</span></div>
+            </div>
+            <div class="chat-input-wrapper">
+                <div class="chat-input-pill"><span class="chat-icon-btn">😀</span><input type="text" id="chatInputText" placeholder="Ketik pesan..." onkeyup="cekInput(event)"><span class="chat-icon-btn" onclick="toggleAttachment()">📎</span><span class="chat-icon-btn" style="margin-right: 5px;">📷</span></div>
+                <button class="btn-send-voice" id="chatActionBtn" onclick="kirimPesan()">🎙️</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="inboxModal">
+        <div class="inbox-box">
+            <div class="inbox-header">
+                <span class="tc-back" onclick="tutupInbox()">❮</span>
+                <span style="margin-left: 10px;">Pesan Masuk</span>
+            </div>
+            <div class="inbox-list">
+                <div class="inbox-item" onclick="bukaChatDariInbox('Sarah', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&h=150&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&h=150&fit=crop" class="inbox-avatar">
+                    <div class="inbox-info">
+                        <div class="inbox-name-row"><span class="inbox-name">Sarah (ART)</span><span class="inbox-time">10:30</span></div>
+                        <div class="inbox-msg-row"><span class="inbox-msg">Baik, saya segera meluncur ke lokasi ibu.</span><span class="inbox-badge">1</span></div>
+                    </div>
+                </div>
+                <div class="inbox-item" onclick="bukaChatDariInbox('Andi', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&fit=crop" class="inbox-avatar">
+                    <div class="inbox-info">
+                        <div class="inbox-name-row"><span class="inbox-name">Andi (Deep Cleaning)</span><span class="inbox-time">Kemarin</span></div>
+                        <div class="inbox-msg-row"><span class="inbox-msg">Terima kasih atas pesanannya.</span></div>
+                    </div>
+                </div>
+                <div class="inbox-item" onclick="bukaChatDariInbox('Admin Home Clean', 'https://placehold.co/150x150/4C5D42/fff?text=HC')">
+                    <img src="https://placehold.co/150x150/4C5D42/fff?text=HC" class="inbox-avatar">
+                    <div class="inbox-info">
+                        <div class="inbox-name-row"><span class="inbox-name">Admin Home Clean</span><span class="inbox-time">12/04/2026</span></div>
+                        <div class="inbox-msg-row"><span class="inbox-msg">Promo diskon 20% untuk layanan taman!</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= DATA BARANG DINAMIS =================
+        const itemDataKecil = [
+            { name: "Menyapu", price: 10000 }, { name: "Mengepel", price: 12000 }, { name: "Membersihkan Kaca (Per 1 Item)", price: 4000 },
+            { name: "Membersihkan Furniture (Per 1 Item)", price: 2000 }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 2000 },
+            { name: "Mencuci dan Menjemur", price: 15000 }, { name: "Mencuci Piring", price: 15000 }, { name: "Memasak Nasi", price: 5000 },
+            { name: "Menata Barang (Per 1 Item)", price: 5000 }, { name: "Membersihkan Sawang", price: 15000 }, { name: "Membersihkan Kamar Mandi", price: 35000 }, { name: "Membersihkan Kitchen", price: 15000 }
+        ];
+
+        const itemDataSedang = [
+            { name: "Menyapu", price: 15000 }, { name: "Mengepel", price: 15000 }, { name: "Membersihkan Kaca (Per 1 Item)", price: 5000 },
+            { name: "Membersihkan Furniture (Per 1 Item)", price: 3000 }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 3000 },
+            { name: "Mencuci dan Menjemur", price: 15000 }, { name: "Mencuci Piring", price: 15000 }, { name: "Memasak Nasi", price: 5000 },
+            { name: "Menata Barang (Per 1 Item)", price: 5000 }, { name: "Membersihkan Sawang", price: 15000 }, { name: "Membersihkan Kamar Mandi", price: 45000 }, { name: "Membersihkan Kitchen", price: 20000 }
+        ];
+
+        const itemDataBesar = [
+            { name: "Menyapu", price: 20000 }, { name: "Mengepel", price: 25000 }, { name: "Membersihkan Kaca (Per 1 Item)", price: 10000 },
+            { name: "Membersihkan Furniture (Per 1 Item)", price: 5000 }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 5000 },
+            { name: "Mencuci dan Menjemur", price: 20000 }, { name: "Mencuci Piring", price: 20000 }, { name: "Memasak Nasi", price: 10000 },
+            { name: "Menata Barang (Per 1 Item)", price: 10000 }, { name: "Membersihkan Sawang", price: 20000 }, { name: "Membersihkan Kamar Mandi", price: 55000 }, { name: "Membersihkan Kitchen", price: 30000 }
+        ];
+
+        // Variabel penampung data aktif
+        let currentItemData = itemDataKecil; 
+        let quantities = new Array(currentItemData.length).fill(0);
+
+        function renderItems() {
+            let html = '<div class="tc-store-name">🏪 Home Clean Official Store</div>';
+            currentItemData.forEach((item, index) => {
+                html += `<div class="item-card"><img src="https://placehold.co/70x70/ccc/fff?text=HC"><div class="item-details"><div class="item-title">${item.name}</div><div class="item-price">Rp${item.price.toLocaleString('id-ID')}</div><div class="item-qty-control"><div class="qty-btn" onclick="updateQty(${index}, -1)">-</div><span id="qty-${index}">${quantities[index]}</span><div class="qty-btn" onclick="updateQty(${index}, 1)">+</div></div></div></div>`;
+            });
+            document.getElementById('itemList').innerHTML = html;
+        }
+
+        function updateQty(index, change) {
+            let newQty = quantities[index] + change;
+            if (newQty >= 0) {
+                quantities[index] = newQty;
+                document.getElementById(`qty-${index}`).innerText = newQty;
+                let total = 0; currentItemData.forEach((it, i) => total += it.price * quantities[i]);
+                document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
+            }
+        }
+
+        function toggleCard(card) { card.classList.toggle('expanded'); }
+        
+        // ================= LOGIKA KLIK BUBBLE (MENENTUKAN HARGA) =================
+        function clickBubble(event, type) { 
+            event.stopPropagation(); 
+            
+            // Set data pesanan berdasarkan pilihan ukuran rumah
+            if(type === 'kecil') {
+                currentItemData = itemDataKecil;
+            } else if(type === 'sedang') {
+                currentItemData = itemDataSedang;
+            } else if(type === 'besar') {
+                currentItemData = itemDataBesar;
+            } else {
+                currentItemData = itemDataKecil;
+            }
+            
+            // Reset quantity dan render ulang keranjang
+            quantities = new Array(currentItemData.length).fill(0);
+            renderItems();
+            document.getElementById('totalPrice').innerText = 'Rp0';
+
+            // Buka modal
+            document.getElementById('checkoutModal').style.display = 'flex'; 
+        }
+
+        function closeModal() { document.getElementById('checkoutModal').style.display = 'none'; }
+        function toggleAddressBox() { let b = document.getElementById('addressEditBox'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
+        function saveAddress() { document.getElementById('displayAddress').innerText = document.getElementById('inputAddress').value; toggleAddressBox(); }
+
+        function tampilkanRincian() {
+            let total = 0; let html = '';
+            currentItemData.forEach((it, i) => { if(quantities[i] > 0) { total += it.price * quantities[i]; html += `<div class="rincian-item-card-row"><img src="https://placehold.co/70x70/ccc/fff?text=HC"><div class="rincian-item-info"><div class="rincian-item-name">${it.name}</div><div class="rincian-item-price-qty"><span>Rp${it.price.toLocaleString('id-ID')}</span><span>x${quantities[i]}</span></div></div></div>`; } });
+            if(total === 0) return alert("Pilih layanan terlebih dahulu!");
+            document.getElementById('rincianAlamatText').innerText = document.getElementById('displayAddress').innerText;
+            document.getElementById('rincianDaftarItem').innerHTML = html;
+            document.getElementById('rincianTotalBiaya').innerText = `Rp${total.toLocaleString('id-ID')}`;
+            document.getElementById('checkoutModal').style.display = 'none';
+            document.getElementById('rincianModal').style.display = 'flex';
+        }
+
+        function kembaliKeCheckout() { document.getElementById('rincianModal').style.display = 'none'; document.getElementById('checkoutModal').style.display = 'flex'; }
+        function bukaMetodePembayaran() { document.getElementById('paymentSheet').classList.add('open'); }
+        function tutupMetodePembayaran() { document.getElementById('paymentSheet').classList.remove('open'); }
+
+        let metodePilihan = "";
+        function pilihMetode(nama) { metodePilihan = nama; document.querySelectorAll('.payment-radio').forEach(el => el.classList.remove('active')); document.getElementById(`radio-${nama}`).classList.add('active'); }
+        function simpanMetodePembayaran() { if(!metodePilihan) return alert("Silakan pilih metode pembayaran terlebih dahulu!"); document.getElementById('selectedPaymentText').innerText = metodePilihan; document.getElementById('selectedPaymentText').style.color = "#ee4d2d"; tutupMetodePembayaran(); }
+        function toggleUlasanSlide(event) { event.preventDefault(); document.getElementById('ulasanSlide').classList.toggle('open'); }
+
+        // ================= STAFF & CHAT JS =================
+        let staffTerpilih = "";
+
+        function bukaProfilStaff() {
+            if(!metodePilihan) return alert("Silakan pilih Metode Pembayaran terlebih dahulu sebelum memproses pesanan!");
+            document.getElementById('rincianModal').style.display = 'none';
+            document.getElementById('staffModal').style.display = 'flex';
+        }
+
+        function kembaliKeRincian() {
+            document.getElementById('staffModal').style.display = 'none';
+            document.getElementById('rincianModal').style.display = 'flex';
+        }
+
+        function pilihStaffPekerja(element, nama) {
+            staffTerpilih = nama;
+            document.querySelectorAll('.staff-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('namaStaffTerpilih').innerText = nama;
+            document.getElementById('namaStaffTerpilih').style.color = "#00a650";
+        }
+
+        function selesaikanPesananFinal() {
+            if(!staffTerpilih) return alert("Silakan pilih salah satu Staff Pekerja untuk melayani Anda!");
+            
+            document.getElementById('chatProfilName').innerText = staffTerpilih;
+            document.getElementById('chatProfilImage').src = document.querySelector('.staff-card.selected .staff-photo').src;
+            
+            let d = new Date();
+            let time = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2);
+            document.getElementById('chatGreetingMsg').innerHTML = `Halo! Saya <strong>${staffTerpilih}</strong> sudah menerima pesanan Anda dan segera meluncur ke lokasi. Ada instruksi khusus? <span class="chat-time">${time}</span>`;
+            
+            document.getElementById('staffModal').style.display = 'none';
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        function tutupChat() {
+            if(confirm("Yakin ingin menutup obrolan?")) {
+                document.getElementById('chatModal').style.display = 'none';
+            }
+        }
+
+        function toggleAttachment() {
+            let menu = document.getElementById('attachmentMenu');
+            menu.style.display = menu.style.display === 'grid' ? 'none' : 'grid';
+        }
+
+        function cekInput(e) {
+            let btn = document.getElementById('chatActionBtn');
+            let val = document.getElementById('chatInputText').value.trim();
+            btn.innerHTML = val.length > 0 ? '➤' : '🎙️';
+            if (e.key === 'Enter') kirimPesan();
+        }
+
+        function kirimPesan() {
+            let input = document.getElementById('chatInputText');
+            let msg = input.value.trim();
+            if(msg) {
+                let d = new Date();
+                let time = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2);
+                let chatArea = document.getElementById('chatBodyArea');
+                chatArea.innerHTML += `<div class="chat-bubble right">${msg}<span class="chat-time">${time}</span></div>`;
+                input.value = '';
+                document.getElementById('chatActionBtn').innerHTML = '🎙️';
+                document.getElementById('attachmentMenu').style.display = 'none'; 
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+        }
+
+        // ================= INBOX JS =================
+        function bukaInbox(event) {
+            if(event) event.preventDefault();
+            document.getElementById('inboxModal').style.display = 'flex';
+        }
+
+        function tutupInbox() {
+            document.getElementById('inboxModal').style.display = 'none';
+        }
+
+        function bukaChatDariInbox(nama, fotoUrl) {
+            document.getElementById('inboxModal').style.display = 'none';
+            
+            document.getElementById('chatProfilName').innerText = nama;
+            document.getElementById('chatProfilImage').src = fotoUrl;
+            
+            let d = new Date();
+            let time = ('0'+d.getHours()).slice(-2) + ':' + ('0'+d.getMinutes()).slice(-2);
+            let chatArea = document.getElementById('chatBodyArea');
+            chatArea.innerHTML = `
+                <div class="chat-bubble left" style="align-self: center; background: #e2e8f0; border-radius: 10px; font-size:0.8rem; color:#555;">Riwayat obrolan dengan ${nama}</div>
+                <div class="chat-bubble left">Halo, ini ${nama}. Ada yang bisa dibantu hari ini?<span class="chat-time">${time}</span></div>
+            `;
+            
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        const obs = new IntersectionObserver((es) => { es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); });
+        document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    </script>
+</body>
+</html>
