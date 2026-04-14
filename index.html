@@ -1191,41 +1191,5 @@
         const obs = new IntersectionObserver((es) => { es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); });
         document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
     </script>
-
-    <div id="modalQrPembayaran" class="modal-overlay" style="z-index: 9999;">
-        <div class="rincian-box" style="height: auto; max-height: 80vh; padding: 30px; text-align: center; justify-content: center; align-items: center;">
-            <h3 style="margin-bottom: 10px; font-size: 1.5rem; color: #333;">Scan untuk Membayar</h3>
-            <p style="margin-bottom: 20px; font-size: 0.95rem; color: #666;">Silakan scan QR code di bawah ini. Anda akan otomatis diarahkan ke link Instagram Alinea Production.</p>
-            
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://www.instagram.com/alineaproduction_?igsh=MWV5c245aDY2bjB5cw==" 
-                 alt="QR Code Pembayaran Instagram" 
-                 style="width: 250px; height: 250px; object-fit: cover; border-radius: 15px; border: 3px solid #A2A820; padding: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-            
-            <button id="btnTutupQr" class="btn-konfirmasi" style="margin-top: 25px; width: 100%;">Selesai / Tutup</button>
-        </div>
-    </div>
-
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const modalQr = document.getElementById('modalQrPembayaran');
-            const btnTutupQr = document.getElementById('btnTutupQr');
-            
-            // Mengambil semua tombol checkout di file Anda (Lanjutkan / Pesan / Konfirmasi)
-            const tombolPembayaran = document.querySelectorAll('.btn-lanjutkan, .btn-pesan, .btn-konfirmasi');
-            
-            tombolPembayaran.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault(); 
-                    // Menampilkan Modal QR Code
-                    modalQr.style.display = 'flex';
-                });
-            });
-
-            // Fungsi untuk menutup Modal QR
-            btnTutupQr.addEventListener('click', function() {
-                modalQr.style.display = 'none';
-            });
-        });
-    </script>
-    </body>
+</body>
 </html>
