@@ -684,22 +684,24 @@
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
-        // FUNGSI BARU KHUSUS VACUUM
+        // PERBAIKAN LOGIKA FUNGSI VACUUM (MENAMPILKAN HANYA 1 ITEM SESUAI PILIHAN)
         function clickBubbleVacuum(event, indexPilihan) {
             event.stopPropagation();
-            currentItemData = itemDataVacuum;
-            quantities = new Array(currentItemData.length).fill(0);
             
-            if (indexPilihan !== undefined) {
-                quantities[indexPilihan] = 1;
-            }
+            // Ambil HANYA 1 item yang diklik dari data Vacuum
+            currentItemData = [itemDataVacuum[indexPilihan]];
             
+            // Karena sekarang keranjang hanya memuat 1 jenis barang, set jumlahnya langsung jadi 1
+            quantities = [1]; 
+            
+            // Render (tampilkan) item ke layar
             renderItems();
             
-            let total = 0;
-            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
+            // Hitung total harga khusus untuk 1 item ini
+            let total = currentItemData[0].price * quantities[0];
             document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
 
+            // Tampilkan pop-up keranjang
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
