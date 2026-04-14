@@ -299,12 +299,12 @@
             transform: translateY(0) scale(1); 
         }
 
-        /* ================= MODAL BASE (DIBIKIN BOUNCY) ================= */
+        /* ================= MODAL BASE ================= */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px); /* Tambahan blur biar cakep */
+            backdrop-filter: blur(5px);
             z-index: 2000;
             display: none;
             justify-content: center;
@@ -379,7 +379,6 @@
         .tc-total-label { font-size: 0.8rem; color: #666; }
         .tc-total-price { font-size: 1.2rem; color: #A2A820; font-weight: bold; }
 
-        /* TOMBOL UTAMA SUPER SMOOTH */
         .btn-pesan, .btn-konfirmasi, .btn-pilih-staff { 
             background: #00a650; color: #fff; border: none; padding: 12px 25px; border-radius: 50px; 
             font-weight: bold; font-size: 1rem; cursor: pointer; 
@@ -542,6 +541,29 @@
             .service-card h3 { font-size: 1.5rem; }
             .services-header h2 { font-size: 1.8rem; margin-bottom: 30px; }
         }
+
+        /* ================= TAMBAHAN CSS UNTUK FITUR PEMBAYARAN BARU ================= */
+        .payment-action-box {
+            background: #fff; width: 90%; max-width: 380px; border-radius: 15px; display: flex; flex-direction: column; color: #333; overflow: hidden; animation: popUpAttach 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .pa-header { background: #f9f9f9; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; border-bottom: 1px solid #eee; font-size: 1.1rem; }
+        .pa-close { cursor: pointer; font-size: 1.4rem; color: #999; transition: transform 0.3s, color 0.3s; }
+        .pa-close:hover { transform: scale(1.2) rotate(90deg); color: #333; }
+        .pa-body { padding: 25px 20px; display: flex; flex-direction: column; gap: 15px; }
+        .pa-input { width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 1rem; outline: none; transition: border-color 0.3s, box-shadow 0.3s; background: #fafafa;}
+        .pa-input:focus { border-color: #00a650; box-shadow: 0 0 10px rgba(0, 166, 80, 0.1); background: #fff;}
+        .pa-btn { width: 100%; background: #00a650; color: #fff; border: none; padding: 15px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: transform 0.2s, background 0.3s, box-shadow 0.3s; margin-top: 10px; box-shadow: 0 5px 15px rgba(0, 166, 80, 0.3); }
+        .pa-btn:hover { background: #008f45; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 166, 80, 0.4);}
+        .pa-btn:active { transform: scale(0.95); }
+        
+        /* SPINNER ANIMASI PROSES */
+        .spinner-ring { width: 60px; height: 60px; border: 6px solid #f3f3f3; border-top: 6px solid #00a650; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* CENTANG HIJAU ANIMASI SUKSES */
+        .success-checkmark { display: none; width: 70px; height: 70px; background: #00a650; border-radius: 50%; position: relative; animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-bottom: 20px;}
+        .success-checkmark::after { content: ''; position: absolute; width: 18px; height: 35px; border: solid white; border-width: 0 5px 5px 0; transform: rotate(45deg); top: 12px; left: 24px; }
+        @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -678,6 +700,37 @@
                 </div>
             </div>
             <div class="staff-bottom-bar"><div style="flex:1; margin-right: 15px;"><div style="font-size: 0.8rem; color: #666;">Staff Terpilih:</div><div style="font-size: 1rem; font-weight: bold; color: #1a1a1a;" id="namaStaffTerpilih">- Belum Dipilih -</div></div><button class="btn-pilih-staff" onclick="selesaikanPesananFinal()">Konfirmasi</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="paymentInputModal">
+        <div class="payment-action-box">
+            <div class="pa-header"><span id="paymentInputTitle">Input Nomor</span><span class="pa-close" onclick="tutupPaymentModal()">✕</span></div>
+            <div class="pa-body">
+                <label id="paymentInputLabel" style="font-weight:bold; font-size:0.95rem; color:#555;">Nomor HP</label>
+                <input type="number" id="paymentPhoneNumber" class="pa-input" placeholder="Contoh: 08123456789">
+                <button class="pa-btn" onclick="konfirmasiPembayaranEwallet()">Bayar Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="qrisModal">
+        <div class="payment-action-box">
+            <div class="pa-header"><span>Scan QRIS</span><span class="pa-close" onclick="tutupPaymentModal()">✕</span></div>
+            <div class="pa-body" style="text-align: center; align-items: center;">
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">Silakan scan QR Code di bawah ini menggunakan aplikasi M-Banking atau E-Wallet Anda.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" style="width:180px; height:180px; margin-bottom: 10px; border: 3px solid #00a650; padding:10px; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <button class="pa-btn" onclick="konfirmasiPembayaranQRIS()">Saya Sudah Bayar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="paymentProcessModal">
+        <div class="payment-action-box" style="align-items: center; justify-content: center; height: 300px; text-align: center;">
+            <div class="spinner-ring" id="paymentSpinner"></div>
+            <div class="success-checkmark" id="paymentSuccessMark"></div>
+            <div id="paymentProcessText" style="margin-top: 10px; font-weight: bold; font-size: 1.2rem; color: #333;">Memproses Transaksi...</div>
+            <div id="paymentProcessSubtext" style="font-size: 0.9rem; color: #888; margin-top: 8px;">Mohon jangan tutup halaman ini</div>
         </div>
     </div>
 
@@ -982,9 +1035,78 @@
             document.getElementById('namaStaffTerpilih').style.color = "#00a650";
         }
 
+        // ================= LOGIKA PEMBAYARAN & ARAHAN CHAT =================
+        function tutupPaymentModal() {
+            document.getElementById('paymentInputModal').style.display = 'none';
+            document.getElementById('qrisModal').style.display = 'none';
+            document.getElementById('staffModal').style.display = 'flex'; // Kembali ke staff modal
+        }
+
         function selesaikanPesananFinal() {
             if(!staffTerpilih) return alert("Silakan pilih salah satu Staff Pekerja untuk melayani Anda!");
             
+            // CEK METODE PEMBAYARAN DAN BUKA MODAL YANG SESUAI
+            if (metodePilihan === 'DANA' || metodePilihan === 'Gopay') {
+                document.getElementById('staffModal').style.display = 'none';
+                document.getElementById('paymentInputTitle').innerText = 'Input Nomor ' + metodePilihan;
+                document.getElementById('paymentInputLabel').innerText = 'Nomor ' + metodePilihan;
+                document.getElementById('paymentPhoneNumber').value = ''; // Reset input
+                document.getElementById('paymentInputModal').style.display = 'flex';
+            } else if (metodePilihan === 'QRIS') {
+                document.getElementById('staffModal').style.display = 'none';
+                document.getElementById('qrisModal').style.display = 'flex';
+            } else {
+                // JIKA COD, Langsung masuk ke chat tanpa konfirmasi nomor/qris
+                lanjutKeChatBeneran();
+            }
+        }
+
+        function konfirmasiPembayaranEwallet() {
+            let num = document.getElementById('paymentPhoneNumber').value;
+            if(!num) return alert("Harap masukkan nomor yang valid!");
+            document.getElementById('paymentInputModal').style.display = 'none';
+            mulaiProsesAnimasiPembayaran();
+        }
+
+        function konfirmasiPembayaranQRIS() {
+            document.getElementById('qrisModal').style.display = 'none';
+            mulaiProsesAnimasiPembayaran();
+        }
+
+        function mulaiProsesAnimasiPembayaran() {
+            let processModal = document.getElementById('paymentProcessModal');
+            let spinner = document.getElementById('paymentSpinner');
+            let checkmark = document.getElementById('paymentSuccessMark');
+            let processText = document.getElementById('paymentProcessText');
+            let processSubtext = document.getElementById('paymentProcessSubtext');
+
+            // Set state awal (Loading)
+            processModal.style.display = 'flex';
+            spinner.style.display = 'block';
+            checkmark.style.display = 'none';
+            processText.innerText = 'Memproses Transaksi...';
+            processText.style.color = '#333';
+            processSubtext.style.display = 'block';
+
+            // Simulasi proses delay 2 detik
+            setTimeout(() => {
+                // Tampilkan sukses checkmark hijau
+                spinner.style.display = 'none';
+                checkmark.style.display = 'block';
+                processText.innerText = 'Pembayaran Berhasil!';
+                processText.style.color = '#00a650';
+                processSubtext.style.display = 'none';
+                
+                // Jeda 1.5 detik agar user bisa lihat centang hijau, lalu otomatis masuk chat
+                setTimeout(() => {
+                    processModal.style.display = 'none';
+                    lanjutKeChatBeneran();
+                }, 1500);
+            }, 2000);
+        }
+
+        // FUNGSI LAMA YANG MENGURUS PEMBUKAAN CHAT (TIDAK ADA YANG DIUBAH LOGIKANYA, HANYA DIPINDAHKAN KESINI)
+        function lanjutKeChatBeneran() {
             document.getElementById('chatProfilName').innerText = staffTerpilih;
             document.getElementById('chatProfilImage').src = document.querySelector('.staff-card.selected .staff-photo').src;
             
