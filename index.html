@@ -198,6 +198,7 @@
             max-height: 350px; /* Disesuaikan agar opsi baru tidak terpotong */
             opacity: 1;
             margin-top: 15px;
+            overflow-y: auto; /* Tambahan kecil: auto-scroll jika list kepanjangan */
         }
 
         .service-card.expanded {
@@ -443,7 +444,21 @@
             
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">03</div><img src="Vacuum.jpeg" class="service-img"><h3>Vacuum</h3><p class="short-desc">Pembersihan debu & tungau...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubbleVacuum(event, 0)">ROOM</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 1)">LIVING ROOM</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 2)">GORDEN</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 3)">KARPET</div></div></div>
             
-            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">04</div><img src="Garden.jpeg" class="service-img"><h3>Garden</h3><p class="short-desc">Perawatan taman & lanskap...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)">
+                <div class="badge">04</div>
+                <img src="Garden.jpeg" class="service-img">
+                <h3>Garden</h3>
+                <p class="short-desc">Perawatan taman & lanskap...</p>
+                <div class="bubble-options">
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 0)">MEMBERSIHKAN DEDAUNAN KERING DAN SAMPAH</div>
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 1)">MENYAPU JALAN SETAPAK, TERAS, ATAU AREA OUTDOOR LAINNYA</div>
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 2)">MEMOTONG RUMPUT</div>
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 3)">MENATA TANAMAN, POT BUNGA, DAN ELEMEN DEKORASI TAMAN</div>
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 4)">PEMANGKASAN TANAMAN</div>
+                    <div class="size-bubble" onclick="clickBubbleGarden(event, 5)">PEMBERSIHAN KOLAM</div>
+                </div>
+            </div>
+
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">05</div><img src="Aquarium.jpeg" class="service-img"><h3>Aquarium</h3><p class="short-desc">Kuras & cek kualitas air...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">06</div><img src="Cleaning Service.jpeg" class="service-img"><h3>Cleaning Service</h3><p class="short-desc">Pembersihan menyeluruh mesin...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
         </div>
@@ -606,6 +621,16 @@
             { name: "KARPET", price: 75000, img: "URL_FOTO_KARPET.jpg", desc: "VACUUM KARPET UNTUK MEMBERSIHKAN DEBU DAN KOTORAN SECARA MENYELURUH.", maxQty: 5 }
         ];
 
+        // DATA BARU: TAMBAHAN UNTUK MENU GARDEN
+        const itemDataGarden = [
+            { name: "MEMBERSIHKAN DEDAUNAN KERING DAN SAMPAH", price: 20000, img: "URL_FOTO_DAUN.jpg", desc: "Membersihkan area taman dari daun kering dan sampah.", maxQty: 5 },
+            { name: "MENYAPU JALAN SETAPAK, TERAS, ATAU AREA OUTDOOR LAINNYA", price: 25000, img: "URL_FOTO_SAPU.jpg", desc: "Menyapu jalan setapak, teras, atau area outdoor lainnya.", maxQty: 5 },
+            { name: "MEMOTONG RUMPUT", price: 50000, img: "URL_FOTO_RUMPUT.jpg", desc: "Memotong dan merapikan rumput taman.", maxQty: 5 },
+            { name: "MENATA TANAMAN, POT BUNGA, DAN ELEMEN DEKORASI TAMAN", price: 40000, img: "URL_FOTO_NATA.jpg", desc: "Menata tanaman, pot bunga, dan elemen dekorasi taman.", maxQty: 5 },
+            { name: "PEMANGKASAN TANAMAN", price: 35000, img: "URL_FOTO_PANGKAS.jpg", desc: "Memangkas tanaman agar rapi dan sehat.", maxQty: 5 },
+            { name: "PEMBERSIHAN KOLAM", price: 75000, img: "URL_FOTO_KOLAM.jpg", desc: "Pembersihan kolam ikan atau kolam taman.", maxQty: 5 }
+        ];
+
         // Variabel penampung data aktif
         let currentItemData = itemDataKecil; 
         let quantities = new Array(currentItemData.length).fill(0);
@@ -684,24 +709,41 @@
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
-        // PERBAIKAN LOGIKA FUNGSI VACUUM (MENAMPILKAN HANYA 1 ITEM SESUAI PILIHAN)
+        // FUNGSI BARU KHUSUS VACUUM
         function clickBubbleVacuum(event, indexPilihan) {
             event.stopPropagation();
+            currentItemData = itemDataVacuum;
+            quantities = new Array(currentItemData.length).fill(0);
             
-            // Ambil HANYA 1 item yang diklik dari data Vacuum
-            currentItemData = [itemDataVacuum[indexPilihan]];
+            if (indexPilihan !== undefined) {
+                quantities[indexPilihan] = 1;
+            }
             
-            // Karena sekarang keranjang hanya memuat 1 jenis barang, set jumlahnya langsung jadi 1
-            quantities = [1]; 
-            
-            // Render (tampilkan) item ke layar
             renderItems();
             
-            // Hitung total harga khusus untuk 1 item ini
-            let total = currentItemData[0].price * quantities[0];
+            let total = 0;
+            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
             document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
 
-            // Tampilkan pop-up keranjang
+            document.getElementById('checkoutModal').style.display = 'flex'; 
+        }
+
+        // FUNGSI BARU KHUSUS GARDEN (DITAMBAHKAN SESUAI PERMINTAAN)
+        function clickBubbleGarden(event, indexPilihan) {
+            event.stopPropagation();
+            currentItemData = itemDataGarden;
+            quantities = new Array(currentItemData.length).fill(0);
+            
+            if (indexPilihan !== undefined) {
+                quantities[indexPilihan] = 1;
+            }
+            
+            renderItems();
+            
+            let total = 0;
+            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
+            document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
+
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
