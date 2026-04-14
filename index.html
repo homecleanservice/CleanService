@@ -777,60 +777,33 @@
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
-        // FUNGSI BARU KHUSUS VACUUM
+        // FUNGSI BARU KHUSUS VACUUM (DIPERBAIKI PERSIS SEPERTI OPEN HOUSE)
         function clickBubbleVacuum(event, indexPilihan) {
             event.stopPropagation();
-            currentItemData = itemDataVacuum;
+            currentItemData = [itemDataVacuum[indexPilihan]];
             quantities = new Array(currentItemData.length).fill(0);
-            
-            if (indexPilihan !== undefined) {
-                quantities[indexPilihan] = 1;
-            }
-            
             renderItems();
-            
-            let total = 0;
-            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
-            document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
-
+            document.getElementById('totalPrice').innerText = 'Rp0';
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
-        // FUNGSI BARU KHUSUS GARDEN
+        // FUNGSI BARU KHUSUS GARDEN (DIPERBAIKI PERSIS SEPERTI OPEN HOUSE)
         function clickBubbleGarden(event, indexPilihan) {
             event.stopPropagation();
-            currentItemData = itemDataGarden;
+            currentItemData = [itemDataGarden[indexPilihan]];
             quantities = new Array(currentItemData.length).fill(0);
-            
-            if (indexPilihan !== undefined) {
-                quantities[indexPilihan] = 1;
-            }
-            
             renderItems();
-            
-            let total = 0;
-            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
-            document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
-
+            document.getElementById('totalPrice').innerText = 'Rp0';
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
-        // FUNGSI BARU KHUSUS AQUARIUM
+        // FUNGSI BARU KHUSUS AQUARIUM (DIPERBAIKI PERSIS SEPERTI OPEN HOUSE)
         function clickBubbleAquarium(event, indexPilihan) {
             event.stopPropagation();
-            currentItemData = itemDataAquarium;
+            currentItemData = [itemDataAquarium[indexPilihan]];
             quantities = new Array(currentItemData.length).fill(0);
-            
-            if (indexPilihan !== undefined) {
-                quantities[indexPilihan] = 1;
-            }
-            
             renderItems();
-            
-            let total = 0;
-            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
-            document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
-
+            document.getElementById('totalPrice').innerText = 'Rp0';
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
