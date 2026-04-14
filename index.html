@@ -195,7 +195,7 @@
         }
 
         .service-card.expanded .bubble-options {
-            max-height: 200px;
+            max-height: 350px; /* Disesuaikan agar opsi baru tidak terpotong */
             opacity: 1;
             margin-top: 15px;
         }
@@ -441,10 +441,11 @@
             
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">02</div><img src="https://placehold.co/400x200/444/fff?text=Open+House+Helper" class="service-img"><h3>Open House Helper</h3><p class="short-desc">Dukungan profesional acara...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubbleOpenHouse(event, 5)">PAKET DENGAN 5 STAFF</div><div class="size-bubble" onclick="clickBubbleOpenHouse(event, 10)">PAKET DENGAN 10 STAFF</div></div></div>
             
-            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">03</div><img src="https://placehold.co/400x200/444/fff?text=Vacuum+Service" class="service-img"><h3>Vacuum</h3><p class="short-desc">Pembersihan debu & tungau...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">03</div><img src="https://placehold.co/400x200/444/fff?text=Vacuum+Service" class="service-img"><h3>Vacuum</h3><p class="short-desc">Pembersihan debu & tungau...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubbleVacuum(event, 0)">ROOM</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 1)">LIVING ROOM</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 2)">GORDEN</div><div class="size-bubble" onclick="clickBubbleVacuum(event, 3)">KARPET</div></div></div>
+            
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">04</div><img src="https://placehold.co/400x200/444/fff?text=Garden+Service" class="service-img"><h3>Garden</h3><p class="short-desc">Perawatan taman & lanskap...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
             <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">05</div><img src="https://placehold.co/400x200/444/fff?text=Aquarium+Service" class="service-img"><h3>Aquarium</h3><p class="short-desc">Kuras & cek kualitas air...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
-            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">06</div><img src="https://placehold.co/400x200/444/fff?text=Deep+Cleaning" class="service-img"><h3>Cleaning Service</h3><p class="short-desc">Pembersihan menyeluruh mesin...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">06</div><img src="Cleaning Service.jpeg" class="service-img"><h3>Cleaning Service</h3><p class="short-desc">Pembersihan menyeluruh mesin...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
         </div>
     </section>
 
@@ -568,17 +569,17 @@
     <script>
         // ================= DATA BARANG DINAMIS =================
         const itemDataKecil = [
-            { name: "Menyapu", price: 10000, img: "URL_FOTO_MENYAPU.jpg" }, { name: "Mengepel", price: 12000, img: "URL_FOTO_MENGEPEL.jpg" }, { name: "Membersihkan Kaca (Per 1 Item)", price: 4000, img: "URL_FOTO_KACA.jpg" },
-            { name: "Membersihkan Furniture (Per 1 Item)", price: 2000, img: "URL_FOTO_FURNITURE.jpg" }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 2000, img: "URL_FOTO_SETRIKA.jpg" },
-            { name: "Mencuci dan Menjemur", price: 15000, img: "URL_FOTO_CUCI.jpg" }, { name: "Mencuci Piring", price: 15000, img: "URL_FOTO_PIRING.jpg" }, { name: "Memasak Nasi", price: 5000, img: "URL_FOTO_MASAK.jpg" },
-            { name: "Menata Barang (Per 1 Item)", price: 5000, img: "URL_FOTO_NATA.jpg" }, { name: "Membersihkan Sawang", price: 15000, img: "URL_FOTO_SAWANG.jpg" }, { name: "Membersihkan Kamar Mandi", price: 35000, img: "URL_FOTO_KAMARMANDI.jpg" }, { name: "Membersihkan Kitchen", price: 15000, img: "URL_FOTO_KITCHEN.jpg" }
+            { name: "Menyapu", price: 10000, img: "menyapu.jpeg" }, { name: "Mengepel", price: 12000, img: "mengepel.jpeg" }, { name: "Membersihkan Kaca (Per 1 Item)", price: 4000, img: "membersihkankaca.jpeg" },
+            { name: "Membersihkan Furniture (Per 1 Item)", price: 2000, img: "membersihkanfurniture.jpeg" }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 3000, img: "menyetrikadanmelipatbaju.jpeg" },
+            { name: "Mencuci dan Menjemur", price: 15000, img: "mencucidanmenjemurbaju.jpeg" }, { name: "Mencuci Piring", price: 15000, img: "mencucipiring.jpeg" }, { name: "Memasak Nasi", price: 5000, img: "memasaknasi.jpeg" },
+            { name: "Menata Barang (Per 1 Item)", price: 5000, img: "menatabarang.jpeg" }, { name: "Membersihkan Sawang", price: 15000, img: "membersihkansawang.jpeg" }, { name: "Membersihkan Kamar Mandi", price: 45000, img: "membersihkankamar mandi.jpeg" }, { name: "Membersihkan Kitchen", price: 20000, img: "membersihkankitchen.jpeg" }
         ];
 
         const itemDataSedang = [
-            { name: "Menyapu", price: 15000, img: "URL_FOTO_MENYAPU.jpg" }, { name: "Mengepel", price: 15000, img: "URL_FOTO_MENGEPEL.jpg" }, { name: "Membersihkan Kaca (Per 1 Item)", price: 5000, img: "URL_FOTO_KACA.jpg" },
-            { name: "Membersihkan Furniture (Per 1 Item)", price: 3000, img: "URL_FOTO_FURNITURE.jpg" }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 3000, img: "URL_FOTO_SETRIKA.jpg" },
-            { name: "Mencuci dan Menjemur", price: 15000, img: "URL_FOTO_CUCI.jpg" }, { name: "Mencuci Piring", price: 15000, img: "URL_FOTO_PIRING.jpg" }, { name: "Memasak Nasi", price: 5000, img: "URL_FOTO_MASAK.jpg" },
-            { name: "Menata Barang (Per 1 Item)", price: 5000, img: "URL_FOTO_NATA.jpg" }, { name: "Membersihkan Sawang", price: 15000, img: "URL_FOTO_SAWANG.jpg" }, { name: "Membersihkan Kamar Mandi", price: 45000, img: "URL_FOTO_KAMARMANDI.jpg" }, { name: "Membersihkan Kitchen", price: 20000, img: "URL_FOTO_KITCHEN.jpg" }
+            { name: "Menyapu", price: 15000, img: "menyapu.jpeg" }, { name: "Mengepel", price: 15000, img: "mengepel.jpeg" }, { name: "Membersihkan Kaca (Per 1 Item)", price: 5000, img: "membersihkankaca.jpeg" },
+            { name: "Membersihkan Furniture (Per 1 Item)", price: 3000, img: "membersihkanfurniture.jpeg" }, { name: "Menyetrika dan Melipat (Per 1 Item)", price: 3000, img: "menyetrikadanmelipatbaju.jpeg" },
+            { name: "Mencuci dan Menjemur", price: 15000, img: "mencucidanmenjemurbaju.jpeg" }, { name: "Mencuci Piring", price: 15000, img: "mencucipiring.jpeg" }, { name: "Memasak Nasi", price: 5000, img: "memasaknasi.jpeg" },
+            { name: "Menata Barang (Per 1 Item)", price: 5000, img: "menatabarang.jpeg" }, { name: "Membersihkan Sawang", price: 15000, img: "membersihkansawang.jpeg" }, { name: "Membersihkan Kamar Mandi", price: 45000, img: "membersihkankamar mandi.jpeg" }, { name: "Membersihkan Kitchen", price: 20000, img: "membersihkankitchen.jpeg" }
         ];
 
         const itemDataBesar = [
@@ -590,11 +591,19 @@
 
         // DATA BARU: TAMBAHAN UNTUK OPEN HOUSE
         const itemDataOpenHouse5 = [
-            { name: "Paket Open House (5 Staff)", price: 750000, img: "PaketOpenHouse.jpeg", desc: "PERSIAPAN SEBELUM OPEN HOUSE, MENYAMBUT DAN MEMBIMBING TAMU, SERTA MENDUKUNG SELURUH AKTIVITAS SELAMA OPEN HOUSE HINGGA PENUTUPAN." }
+            { name: "Paket Open House (5 Staff)", price: 500000, img: "URL_FOTO_OPENHOUSE_5.jpg", desc: "PERSIAPAN SEBELUM OPEN HOUSE, MENYAMBUT DAN MEMBIMBING TAMU, SERTA MENDUKUNG SELURUH AKTIVITAS SELAMA OPEN HOUSE HINGGA PENUTUPAN." }
         ];
 
         const itemDataOpenHouse10 = [
-            { name: "Paket Open House (10 Staff)", price: 1500000, img: "PaketOpenHouse.jpeg", desc: "PERSIAPAN SEBELUM OPEN HOUSE, MENYAMBUT DAN MEMBIMBING TAMU, SERTA MENDUKUNG SELURUH AKTIVITAS SELAMA OPEN HOUSE HINGGA PENUTUPAN." }
+            { name: "Paket Open House (10 Staff)", price: 1000000, img: "URL_FOTO_OPENHOUSE_10.jpg", desc: "PERSIAPAN SEBELUM OPEN HOUSE, MENYAMBUT DAN MEMBIMBING TAMU, SERTA MENDUKUNG SELURUH AKTIVITAS SELAMA OPEN HOUSE HINGGA PENUTUPAN." }
+        ];
+
+        // DATA BARU: TAMBAHAN UNTUK MENU VACUUM
+        const itemDataVacuum = [
+            { name: "ROOM", price: 100000, img: "URL_FOTO_ROOM.jpg", desc: "VACUUM TUNGAU UNTUK KASUR, DIPAN, BANTAL, DAN GULING. DILENGKAPI AIR PURIFIER DENGAN AROMA THERAPY SERTA UVC STERILIZER. BERLAKU UNTUK SEMUA UKURAN.", maxQty: 4 },
+            { name: "LIVING ROOM", price: 150000, img: "URL_FOTO_LIVINGROOM.jpg", desc: "VACUUM TUNGAU UNTUK SOFA. DILENGKAPI UVC STERILIZER DAN AROMA THERAPY. BERLAKU UNTUK SEMUA UKURAN.", maxQty: 3 },
+            { name: "GORDEN", price: 50000, img: "URL_FOTO_GORDEN.jpg", desc: "VACUUM GORDEN UNTUK MENJAGA KEBERSIHAN DAN MENGHILANGKAN DEBU.", maxQty: 10 },
+            { name: "KARPET", price: 75000, img: "URL_FOTO_KARPET.jpg", desc: "VACUUM KARPET UNTUK MEMBERSIHKAN DEBU DAN KOTORAN SECARA MENYELURUH.", maxQty: 5 }
         ];
 
         // Variabel penampung data aktif
@@ -613,12 +622,20 @@
         function updateQty(index, change) {
             let newQty = quantities[index] + change;
             
-            // LOGIKA BARU: BATASI MAKSIMAL 1 UNTUK PAKET OPEN HOUSE
-            let isPaketOpenHouse = currentItemData[index].name.includes("Paket Open House");
-            let maxBatas = isPaketOpenHouse ? 1 : 99;
+            // LOGIKA BARU: BATASI MAKSIMAL SECARA DINAMIS (OPEN HOUSE & VACUUM)
+            let maxBatas = 99;
+            if (currentItemData[index].name.includes("Paket Open House")) {
+                maxBatas = 1;
+            } else if (currentItemData[index].maxQty) {
+                maxBatas = currentItemData[index].maxQty; 
+            }
 
             if (newQty > maxBatas) {
-                alert("FITUR INI HANYA BISA DITAMBAHKAN SATU KALI. TIDAK BOLEH MENAMBAHKAN LEBIH DARI SATU.");
+                if(maxBatas === 1) {
+                    alert("FITUR INI HANYA BISA DITAMBAHKAN SATU KALI. TIDAK BOLEH MENAMBAHKAN LEBIH DARI SATU.");
+                } else {
+                    alert(`BATAS MAKSIMAL PENAMBAHAN UNTUK LAYANAN INI ADALAH ${maxBatas}.`);
+                }
                 return;
             }
 
@@ -636,7 +653,6 @@
         function clickBubble(event, type) { 
             event.stopPropagation(); 
             
-            // Set data pesanan berdasarkan pilihan ukuran rumah
             if(type === 'kecil') {
                 currentItemData = itemDataKecil;
             } else if(type === 'sedang') {
@@ -647,12 +663,9 @@
                 currentItemData = itemDataKecil;
             }
             
-            // Reset quantity dan render ulang keranjang
             quantities = new Array(currentItemData.length).fill(0);
             renderItems();
             document.getElementById('totalPrice').innerText = 'Rp0';
-
-            // Buka modal
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
@@ -668,6 +681,25 @@
             quantities = new Array(currentItemData.length).fill(0);
             renderItems();
             document.getElementById('totalPrice').innerText = 'Rp0';
+            document.getElementById('checkoutModal').style.display = 'flex'; 
+        }
+
+        // FUNGSI BARU KHUSUS VACUUM
+        function clickBubbleVacuum(event, indexPilihan) {
+            event.stopPropagation();
+            currentItemData = itemDataVacuum;
+            quantities = new Array(currentItemData.length).fill(0);
+            
+            if (indexPilihan !== undefined) {
+                quantities[indexPilihan] = 1;
+            }
+            
+            renderItems();
+            
+            let total = 0;
+            currentItemData.forEach((it, i) => total += it.price * quantities[i]);
+            document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
+
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
