@@ -471,7 +471,19 @@
                 </div>
             </div>
 
-            <div class="service-card fade-in" onclick="toggleCard(this)"><div class="badge">06</div><img src="Cleaning Service.jpeg" class="service-img"><h3>Cleaning Service</h3><p class="short-desc">Pembersihan menyeluruh mesin...</p><div class="bubble-options"><div class="size-bubble" onclick="clickBubble(event, 'kecil')">RUMAH KECIL</div><div class="size-bubble" onclick="clickBubble(event, 'sedang')">RUMAH SEDANG</div><div class="size-bubble" onclick="clickBubble(event, 'besar')">RUMAH BESAR</div></div></div>
+            <div class="service-card fade-in" onclick="toggleCard(this)">
+                <div class="badge">06</div>
+                <img src="Cleaning Service.jpeg" class="service-img">
+                <h3>Cleaning Service</h3>
+                <p class="short-desc">Pembersihan menyeluruh mesin...</p>
+                <div class="bubble-options">
+                    <div class="size-bubble" onclick="clickBubbleCleaningService(event, 'ac')">AC</div>
+                    <div class="size-bubble" onclick="clickBubbleCleaningService(event, 'kulkas')">Kulkas dan Freezer</div>
+                    <div class="size-bubble" onclick="clickBubbleCleaningService(event, 'kipas')">Kipas</div>
+                    <div class="size-bubble" onclick="clickBubbleCleaningService(event, 'toren')">Toren</div>
+                    <div class="size-bubble" onclick="clickBubbleCleaningService(event, 'genteng')">Pemasangan Genteng</div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -649,6 +661,29 @@
             { name: "Aquarium Besar ukuran 100x50x50", price: 100000, img: "URL_FOTO_AQUARIUM_BESAR.jpg", desc: "Pembersihan filter air, pembersihan kaca aquarium, serta pembersihan batu dan dekorasi aquarium.", maxQty: 5 }
         ];
 
+        // DATA BARU: TAMBAHAN UNTUK MENU CLEANING SERVICE
+        const itemDataCleaningAC = [
+            { name: "AC Cleaner", price: 75000, img: "URL_FOTO_AC_CLEANER.jpg", desc: "Membersihkan dan membantu menjaga kualitas AC.", maxQty: 5 },
+            { name: "Penambahan Freon", price: 150000, img: "URL_FOTO_FREON.jpg", desc: "Menambahkan freon AC.", maxQty: 5 }
+        ];
+
+        const itemDataCleaningKulkas = [
+            { name: "Kulkas", price: 50000, img: "URL_FOTO_KULKAS.jpg", desc: "Membersihkan kulkas.", maxQty: 3 },
+            { name: "Freezer", price: 60000, img: "URL_FOTO_FREEZER.jpg", desc: "Membersihkan freezer.", maxQty: 3 }
+        ];
+
+        const itemDataCleaningKipas = [
+            { name: "Kipas", price: 25000, img: "URL_FOTO_KIPAS.jpg", desc: "Membersihkan kipas.", minQty: 2, maxQty: 5 }
+        ];
+
+        const itemDataCleaningToren = [
+            { name: "Toren", price: 100000, img: "URL_FOTO_TOREN.jpg", desc: "Membersihkan toren.", maxQty: 3 }
+        ];
+
+        const itemDataCleaningGenteng = [
+            { name: "Pemasangan Genteng", price: 50000, img: "URL_FOTO_GENTENG.jpg", desc: "Memasang genteng.", maxQty: 10 }
+        ];
+
         // Variabel penampung data aktif
         let currentItemData = itemDataKecil; 
         let quantities = new Array(currentItemData.length).fill(0);
@@ -665,12 +700,18 @@
         function updateQty(index, change) {
             let newQty = quantities[index] + change;
             
-            // LOGIKA BARU: BATASI MAKSIMAL SECARA DINAMIS (OPEN HOUSE & VACUUM)
+            // LOGIKA BARU: BATASI MAKSIMAL DAN MINIMAL SECARA DINAMIS
             let maxBatas = 99;
+            let minBatas = 0; 
+
             if (currentItemData[index].name.includes("Paket Open House")) {
                 maxBatas = 1;
             } else if (currentItemData[index].maxQty) {
                 maxBatas = currentItemData[index].maxQty; 
+            }
+
+            if (currentItemData[index].minQty) {
+                minBatas = currentItemData[index].minQty;
             }
 
             if (newQty > maxBatas) {
@@ -680,6 +721,15 @@
                     alert(`BATAS MAKSIMAL PENAMBAHAN UNTUK LAYANAN INI ADALAH ${maxBatas}.`);
                 }
                 return;
+            }
+
+            // Logika untuk minimal qty (misal minimal 2, jadi kalau dari 0 +1 langsung ke 2, kalau dari 2 -1 langsung ke 0)
+            if (change > 0 && quantities[index] === 0 && minBatas > 0) {
+                newQty = minBatas;
+            } else if (change < 0 && newQty < minBatas && newQty > 0) {
+                newQty = 0;
+            } else if (change < 0 && quantities[index] === 0) {
+                return; // Jangan lakukan apa-apa kalau dari 0 dikurangi
             }
 
             if (newQty >= 0) {
@@ -781,6 +831,27 @@
             currentItemData.forEach((it, i) => total += it.price * quantities[i]);
             document.getElementById('totalPrice').innerText = `Rp${total.toLocaleString('id-ID')}`;
 
+            document.getElementById('checkoutModal').style.display = 'flex'; 
+        }
+
+        // FUNGSI BARU KHUSUS CLEANING SERVICE
+        function clickBubbleCleaningService(event, type) {
+            event.stopPropagation();
+            if(type === 'ac') {
+                currentItemData = itemDataCleaningAC;
+            } else if(type === 'kulkas') {
+                currentItemData = itemDataCleaningKulkas;
+            } else if(type === 'kipas') {
+                currentItemData = itemDataCleaningKipas;
+            } else if(type === 'toren') {
+                currentItemData = itemDataCleaningToren;
+            } else if(type === 'genteng') {
+                currentItemData = itemDataCleaningGenteng;
+            }
+
+            quantities = new Array(currentItemData.length).fill(0);
+            renderItems();
+            document.getElementById('totalPrice').innerText = 'Rp0';
             document.getElementById('checkoutModal').style.display = 'flex'; 
         }
 
