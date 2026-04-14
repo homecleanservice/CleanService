@@ -404,6 +404,85 @@
         .inbox-msg { font-size: 0.9rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
         .inbox-badge { background: #25D366; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 0.75rem; font-weight: bold; }
 
+        /* ================= RESPONSIVE LAYOUT (MEDIA QUERIES) ================= */
+        /* Tablet & iPad */
+        @media screen and (max-width: 992px) {
+            .about-section {
+                padding: 80px 30px;
+                gap: 30px;
+            }
+            .services-section {
+                padding: 80px 30px;
+            }
+            .services-grid {
+                gap: 20px;
+            }
+        }
+
+        /* Mobile Phone Besar & Tablet Potrait */
+        @media screen and (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            .about-section {
+                flex-direction: column;
+                padding: 60px 20px;
+                text-align: center;
+            }
+            .about-text h2 {
+                font-size: 2.8rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-header h2 {
+                font-size: 2.2rem;
+            }
+            .services-section {
+                padding: 60px 20px;
+            }
+        }
+
+        /* Mobile Phone Kecil */
+        @media screen and (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 0.85rem;
+                padding: 8px 20px;
+            }
+            .nav-links a {
+                font-size: 13px;
+                padding: 8px 10px;
+            }
+            .about-text h2 {
+                font-size: 2.2rem;
+            }
+            .about-text p {
+                font-size: 1rem;
+            }
+            .service-card {
+                padding: 20px;
+            }
+            .service-card h3 {
+                font-size: 1.5rem;
+            }
+            .services-header h2 {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+        }
+
     </style>
 </head>
 <body>
