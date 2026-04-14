@@ -687,7 +687,7 @@
         let quantities = new Array(currentItemData.length).fill(0);
 
         function renderItems() {
-            let html = '<div class="tc-store-name"><img src="URL_FOTO_BOS_DISINI.jpg" class="store-logo" alt="Logo"> Home Clean Official Store</div>';
+            let html = '<div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home Clean Official Store</div>';
             currentItemData.forEach((item, index) => {
                 let descHtml = item.desc ? `<div style="font-size: 0.8rem; color: #666; margin-bottom: 8px; line-height: 1.3;">${item.desc}</div>` : '';
                 html += `<div class="item-card"><img src="${item.img}" class="item-img"><div class="item-details"><div class="item-title">${item.name}</div>${descHtml}<div class="item-price">Rp${item.price.toLocaleString('id-ID')}</div><div class="item-qty-control"><div class="qty-btn" onclick="updateQty(${index}, -1)">-</div><span id="qty-${index}">${quantities[index]}</span><div class="qty-btn" onclick="updateQty(${index}, 1)">+</div></div></div></div>`;
