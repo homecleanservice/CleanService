@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Clean Service</title>
+    <title>Home TO Clean Service</title>
     <style>
         /* ================= RESET & FONT ================= */
         * {
@@ -637,7 +637,7 @@
 <body>
 
     <nav id="navbar">
-        <div class="logo">🏡 Home Clean</div>
+        <div class="logo">🏡 Home To Clean</div>
         <div class="nav-links">
             <a href="#about" class="nav-item">About us</a>
             <a href="#services" class="nav-item">Services</a>
@@ -656,10 +656,10 @@
         </div>
     </div>
 
-    <header class="hero"><div class="hero-content fade-in"><h1>HOME CLEAN</h1><div class="hero-subtitle">lingkungan nyaman, anda aman hanya dengan satu kali klik</div></div></header>
+    <header class="hero"><div class="hero-content fade-in"><h1>HOME TO CLEAN</h1><div class="hero-subtitle">lingkungan nyaman, anda aman hanya dengan satu kali klik</div></div></header>
 
     <section class="about-section" id="about">
-        <div class="about-text fade-in"><h2>HOME CLEAN</h2><p>Platform layanan jasa kebersihan profesional dengan tenaga ahli terlatih, peralatan modern, dan sistem pemesanan praktis.</p></div>
+        <div class="about-text fade-in"><h2>HOME To CLEAN</h2><p>Platform layanan jasa kebersihan profesional dengan tenaga ahli terlatih, peralatan modern, dan sistem pemesanan praktis.</p></div>
         <div class="about-images fade-in"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070"></div>
     </section>
 
@@ -723,7 +723,7 @@
                 <div class="address-edit-box" id="addressEditBox"><textarea id="inputAddress" class="address-input" rows="3">Jl. Jendral Sudirman No.123...</textarea><button class="btn-save-address" onclick="saveAddress()">Simpan</button></div>
             </div>
             
-            <div class="tc-items" id="itemList"><div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home Clean Official Store</div></div>
+            <div class="tc-items" id="itemList"><div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home To Clean Official Store</div></div>
             <div class="tc-bottom-bar"><div class="tc-total-section"><div class="tc-total-label">Total</div><div class="tc-total-price" id="totalPrice">Rp0</div></div><button class="btn-pesan" onclick="tampilkanRincian()">Buat Pesanan</button></div>
         </div>
     </div>
@@ -735,7 +735,7 @@
                 <div class="rincian-section-block" style="border-bottom: 3px dashed #A2A820;"><div style="font-weight: bold;">📍 Alamat Pengguna</div><div id="rincianAlamatText"></div></div>
                 <div class="rincian-section-block">
                     
-                    <div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home Clean Official Store</div>
+                    <div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home To Clean Official Store</div>
                     <div id="rincianDaftarItem"></div>
                     <div class="rincian-message-box"><label>Pesan:</label><input type="text" placeholder="(Opsional) Tinggalkan pesan ke staff"></div>
                 </div>
@@ -836,7 +836,7 @@
             <div class="join-workers-header">
                 <span class="join-workers-close" onclick="tutupJoinWorkers()">×</span>
                 <h2>🧹 Bergabung Sebagai Pekerja</h2>
-                <p>Daftar sekarang dan mulai karir Anda bersama Home Clean</p>
+                <p>Daftar sekarang dan mulai karir Anda bersama Home To Clean</p>
             </div>
             <div class="join-workers-body">
                 <form id="joinWorkersForm" onsubmit="submitJoinWorkers(event)">
@@ -905,10 +905,10 @@
                         <div class="inbox-msg-row"><span class="inbox-msg">Terima kasih atas pesanannya.</span></div>
                     </div>
                 </div>
-                <div class="inbox-item" onclick="bukaChatDariInbox('Admin Home Clean', 'https://placehold.co/150x150/4C5D42/fff?text=HC')">
+                <div class="inbox-item" onclick="bukaChatDariInbox('Admin Home To Clean', 'https://placehold.co/150x150/4C5D42/fff?text=HC')">
                     <img src="https://placehold.co/150x150/4C5D42/fff?text=HC" class="inbox-avatar">
                     <div class="inbox-info">
-                        <div class="inbox-name-row"><span class="inbox-name">Admin Home Clean</span><span class="inbox-time">12/04/2026</span></div>
+                        <div class="inbox-name-row"><span class="inbox-name">Admin Home To Clean</span><span class="inbox-time">12/04/2026</span></div>
                         <div class="inbox-msg-row"><span class="inbox-msg">Promo diskon 20% untuk layanan taman!</span></div>
                     </div>
                 </div>
@@ -996,7 +996,7 @@
         let quantities = new Array(currentItemData.length).fill(0);
 
         function renderItems() {
-            let html = '<div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home Clean Official Store</div>';
+            let html = '<div class="tc-store-name"><img src="Logo.jpeg" class="store-logo" alt="Logo"> Home To Clean Official Store</div>';
             currentItemData.forEach((item, index) => {
                 let descHtml = item.desc ? `<div style="font-size: 0.8rem; color: #666; margin-bottom: 8px; line-height: 1.3;">${item.desc}</div>` : '';
                 html += `<div class="item-card"><img src="${item.img}" class="item-img"><div class="item-details"><div class="item-title">${item.name}</div>${descHtml}<div class="item-price">Rp${item.price.toLocaleString('id-ID')}</div><div class="item-qty-control"><div class="qty-btn" onclick="updateQty(${index}, -1)">-</div><span id="qty-${index}">${quantities[index]}</span><div class="qty-btn" onclick="updateQty(${index}, 1)">+</div></div></div></div>`;
@@ -1419,7 +1419,7 @@
                 container.innerHTML = `
                     <div class="anim-circle success anim-pop">✓</div>
                     <h3 class="anim-text">Pembayaran Berhasil!</h3>
-                    <p class="anim-text">Selamat! Anda kini resmi menjadi bagian dari tim <strong>Home Clean Service</strong>. Kami akan segera menghubungi Anda untuk pengiriman atribut.</p>
+                    <p class="anim-text">Selamat! Anda kini resmi menjadi bagian dari tim <strong>Home To Clean Service</strong>. Kami akan segera menghubungi Anda untuk pengiriman atribut.</p>
                 `;
             } else {
                 container.innerHTML = `
