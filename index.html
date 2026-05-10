@@ -1400,14 +1400,87 @@
         }
 
         function payAdminFee() {
-            // Simulasi loading pembayaran
-            const btn = document.getElementById('btnPayAdmin');
-            btn.innerHTML = 'Memproses...';
-            setTimeout(() => {
+            // Buka payment method sheet untuk worker
+            document.getElementById('workerPaymentSheet').classList.add('open');
+        }
+
+        // ================= WORKER PAYMENT FLOW (mirip sistem pembayaran layanan) =================
+        let workerMetodePilihan = "";
+
+        function pilihWorkerMetode(nama) {
+            workerMetodePilihan = nama;
+            document.querySelectorAll('.worker-payment-radio').forEach(el => el.classList.remove('active'));
+            document.getElementById('worker-radio-' + nama).classList.add('active');
+        }
+
+        function tutupWorkerPaymentSheet() {
+            document.getElementById('workerPaymentSheet').classList.remove('open');
+        }
+
+        function simpanWorkerMetodePembayaran() {
+            if (!workerMetodePilihan) return alert("Silakan pilih metode pembayaran terlebih dahulu!");
+            tutupWorkerPaymentSheet();
+
+            if (workerMetodePilihan === 'DANA' || workerMetodePilihan === 'Gopay') {
+                document.getElementById('workerPaymentInputTitle').innerText = 'Input Nomor ' + workerMetodePilihan;
+                document.getElementById('workerPaymentInputLabel').innerText = 'Nomor ' + workerMetodePilihan;
+                document.getElementById('workerPaymentPhoneNumber').value = '';
                 document.getElementById('modalAdminFee').style.display = 'none';
-                btn.innerHTML = 'Bayar Rp 150.000'; // reset
-                showFinalAnimation(true);
-            }, 1000);
+                document.getElementById('workerPaymentInputModal').style.display = 'flex';
+            } else if (workerMetodePilihan === 'QRIS') {
+                document.getElementById('modalAdminFee').style.display = 'none';
+                document.getElementById('workerQrisModal').style.display = 'flex';
+            } else {
+                // COD - langsung proses
+                document.getElementById('modalAdminFee').style.display = 'none';
+                mulaiProsesAnimasiWorkerPembayaran();
+            }
+        }
+
+        function tutupWorkerPaymentModal() {
+            document.getElementById('workerPaymentInputModal').style.display = 'none';
+            document.getElementById('workerQrisModal').style.display = 'none';
+            document.getElementById('modalAdminFee').style.display = 'block';
+        }
+
+        function konfirmasiWorkerPembayaranEwallet() {
+            let num = document.getElementById('workerPaymentPhoneNumber').value;
+            if (!num) return alert("Harap masukkan nomor yang valid!");
+            document.getElementById('workerPaymentInputModal').style.display = 'none';
+            mulaiProsesAnimasiWorkerPembayaran();
+        }
+
+        function konfirmasiWorkerPembayaranQRIS() {
+            document.getElementById('workerQrisModal').style.display = 'none';
+            mulaiProsesAnimasiWorkerPembayaran();
+        }
+
+        function mulaiProsesAnimasiWorkerPembayaran() {
+            let processModal = document.getElementById('workerPaymentProcessModal');
+            let spinner = document.getElementById('workerPaymentSpinner');
+            let checkmark = document.getElementById('workerPaymentSuccessMark');
+            let processText = document.getElementById('workerPaymentProcessText');
+            let processSubtext = document.getElementById('workerPaymentProcessSubtext');
+
+            processModal.style.display = 'flex';
+            spinner.style.display = 'block';
+            checkmark.style.display = 'none';
+            processText.innerText = 'Memproses Transaksi...';
+            processText.style.color = '#333';
+            processSubtext.style.display = 'block';
+
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                checkmark.style.display = 'block';
+                processText.innerText = 'Pembayaran Berhasil!';
+                processText.style.color = '#00a650';
+                processSubtext.style.display = 'none';
+
+                setTimeout(() => {
+                    processModal.style.display = 'none';
+                    showFinalAnimation(true);
+                }, 1500);
+            }, 2000);
         }
 
         function showFinalAnimation(isAccepted) {
@@ -1467,11 +1540,23 @@
             </div>
         </div>
 
-        <div class="new-step-modal" id="modalAdminFee" style="display:none;">
+        <div class="new-step-modal" id="modalAdminFee" style="display:none; position: relative; overflow: hidden;">
             <h3>Tahap 3: Biaya Administrasi</h3>
             <p>Selamat Anda <strong>Lulus Wawancara</strong>! Silakan selesaikan pembayaran administrasi untuk pembelian atribut pekerja (Seragam, Peralatan Dasar, ID Card).</p>
             <h2 class="admin-price">Rp 150.000</h2>
             <button class="btn-pesan w-100" id="btnPayAdmin" onclick="payAdminFee()">Bayar Rp 150.000</button>
+
+            <!-- Payment Sheet (mirip payment-sheet pada layanan) -->
+            <div class="payment-sheet" id="workerPaymentSheet">
+                <div class="payment-header">Metode Pembayaran<span class="payment-close" onclick="tutupWorkerPaymentSheet()">✕</span></div>
+                <div class="payment-list">
+                    <div class="payment-option" onclick="pilihWorkerMetode('DANA')"><div class="payment-option-left">🔵 DANA</div><div class="payment-radio worker-payment-radio" id="worker-radio-DANA"></div></div>
+                    <div class="payment-option" onclick="pilihWorkerMetode('Gopay')"><div class="payment-option-left">🟢 Gopay</div><div class="payment-radio worker-payment-radio" id="worker-radio-Gopay"></div></div>
+                    <div class="payment-option" onclick="pilihWorkerMetode('QRIS')"><div class="payment-option-left">📱 QRIS</div><div class="payment-radio worker-payment-radio" id="worker-radio-QRIS"></div></div>
+                    <div class="payment-option" onclick="pilihWorkerMetode('Cash On Delivery (COD)')"><div class="payment-option-left">📦 Cash On Delivery (COD)</div><div class="payment-radio worker-payment-radio" id="worker-radio-Cash On Delivery (COD)"></div></div>
+                </div>
+                <div class="payment-footer"><button class="btn-lanjutkan" onclick="simpanWorkerMetodePembayaran()">Lanjutkan</button></div>
+            </div>
         </div>
 
         <div class="new-step-modal text-center" id="modalFinalAnim" style="display:none;">
@@ -1479,6 +1564,38 @@
             <button class="btn-konfirmasi mt-15 w-100" onclick="closeNewFlow()">Selesai & Tutup</button>
         </div>
 
+    </div>
+
+    <!-- ================= WORKER PAYMENT MODALS ================= -->
+    <div class="modal-overlay" id="workerPaymentInputModal" style="z-index: 4000;">
+        <div class="payment-action-box">
+            <div class="pa-header"><span id="workerPaymentInputTitle">Input Nomor</span><span class="pa-close" onclick="tutupWorkerPaymentModal()">✕</span></div>
+            <div class="pa-body">
+                <label id="workerPaymentInputLabel" style="font-weight:bold; font-size:0.95rem; color:#555;">Nomor HP</label>
+                <input type="number" id="workerPaymentPhoneNumber" class="pa-input" placeholder="Contoh: 08123456789">
+                <button class="pa-btn" onclick="konfirmasiWorkerPembayaranEwallet()">Bayar Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="workerQrisModal" style="z-index: 4000;">
+        <div class="payment-action-box">
+            <div class="pa-header"><span>Scan QRIS</span><span class="pa-close" onclick="tutupWorkerPaymentModal()">✕</span></div>
+            <div class="pa-body" style="text-align: center; align-items: center;">
+                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">Silakan scan QR Code di bawah ini menggunakan aplikasi M-Banking atau E-Wallet Anda.</p>
+                <img src="qrcode.png" style="width:180px; height:180px; margin-bottom: 10px; border: 3px solid #00a650; padding:10px; border-radius:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <button class="pa-btn" onclick="konfirmasiWorkerPembayaranQRIS()">Saya Sudah Bayar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="workerPaymentProcessModal" style="z-index: 4000;">
+        <div class="payment-action-box" style="align-items: center; justify-content: center; height: 300px; text-align: center;">
+            <div class="spinner-ring" id="workerPaymentSpinner"></div>
+            <div class="success-checkmark" id="workerPaymentSuccessMark"></div>
+            <div id="workerPaymentProcessText" style="margin-top: 10px; font-weight: bold; font-size: 1.2rem; color: #333;">Memproses Transaksi...</div>
+            <div id="workerPaymentProcessSubtext" style="font-size: 0.9rem; color: #888; margin-top: 8px;">Mohon jangan tutup halaman ini</div>
+        </div>
     </div>
 </body>
 </html>
