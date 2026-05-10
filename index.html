@@ -589,6 +589,49 @@
         .submit-join-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(109, 128, 95, 0.4); }
         .submit-join-btn:active { transform: translateY(0); }
         .upload-status { font-size: 0.85rem; color: #00a650; margin-left: 10px; display: none; }
+        
+        /* ================= CSS ALUR REKRUTMEN BARU ================= */
+        .new-step-modal {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            padding: 25px;
+            color: #333;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: slideUpSmooth 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            position: relative;
+        }
+        .new-step-modal h3 { color: #2D3A26; margin-bottom: 10px; font-size: 1.3rem; }
+        .new-step-modal p { font-size: 0.95rem; color: #555; line-height: 1.5; }
+        .new-file-input { width: 100%; padding: 10px; border: 2px dashed #A2A820; border-radius: 8px; margin: 15px 0; background: #f9f9f9; cursor: pointer; }
+        .meet-link-box { background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; border: 1px solid #00a650; transition: transform 0.3s; }
+        .meet-link-box:hover { transform: scale(1.05); }
+        .meet-link-box a { color: #00a650; font-weight: bold; text-decoration: none; font-size: 1.1rem; }
+        .w-100 { width: 100%; }
+        .mt-15 { margin-top: 15px; }
+        .result-btn-group { display: flex; gap: 10px; }
+        .result-btn-group button { flex: 1; }
+        .btn-reject { background: #e74c3c; color: #fff; border: none; padding: 12px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .btn-reject:hover { background: #c0392b; transform: scale(1.05); }
+        .admin-price { color: #A2A820; font-size: 2rem; margin: 15px 0; text-align: center; font-weight: 900; }
+        
+        /* Animasi Interaktif Hasil */
+        .anim-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 40px; color: white; margin: 0 auto 15px; }
+        .anim-circle.success { background: #00a650; box-shadow: 0 0 20px rgba(0, 166, 80, 0.5); }
+        .anim-circle.failed { background: #e74c3c; box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+        
+        @keyframes popCheck {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes floatTextUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-pop { animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .anim-text { opacity: 0; animation: floatTextUp 0.5s ease 0.3s forwards; }
     </style>
 </head>
 <body>
@@ -613,10 +656,10 @@
         </div>
     </div>
 
-    <header class="hero"><div class="hero-content fade-in"><h1>HOME TO CLEAN</h1><div class="hero-subtitle">lingkungan nyaman, anda aman hanya dengan satu kali klik</div></div></header>
+    <header class="hero"><div class="hero-content fade-in"><h1>HOME CLEAN</h1><div class="hero-subtitle">lingkungan nyaman, anda aman hanya dengan satu kali klik</div></div></header>
 
     <section class="about-section" id="about">
-        <div class="about-text fade-in"><h2>HOME TO CLEAN</h2><p>Platform layanan jasa kebersihan profesional dengan tenaga ahli terlatih, peralatan modern, dan sistem pemesanan praktis.</p></div>
+        <div class="about-text fade-in"><h2>HOME CLEAN</h2><p>Platform layanan jasa kebersihan profesional dengan tenaga ahli terlatih, peralatan modern, dan sistem pemesanan praktis.</p></div>
         <div class="about-images fade-in"><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070"></div>
     </section>
 
@@ -1310,8 +1353,6 @@
             event.preventDefault();
             
             const phone = document.getElementById('workerPhone').value;
-            
-            // Cek apakah semua dokumen sudah diupload
             const allUploaded = uploadedFiles.KTP && uploadedFiles.Rekening && uploadedFiles.SKCK && uploadedFiles.STNK;
             
             if(!phone) {
@@ -1324,13 +1365,120 @@
                 return;
             }
             
-            // Simulasi submit sukses
-            alert('✅ Pendaftaran berhasil!\n\nData Anda sedang diverifikasi oleh tim kami.\nKami akan menghubungi Anda melalui nomor ' + phone + ' dalam 1-3 hari kerja.\n\nTerima kasih telah bergabung dengan Home Clean!');
+            // Tutup modal pendaftaran awal
             tutupJoinWorkers();
+            
+            // Buka alur baru: Upload CV
+            document.getElementById('newFlowOverlay').style.display = 'flex';
+            document.getElementById('modalCV').style.display = 'block';
+        }
+
+        // ================= ALUR BARU PEKERJA =================
+        function submitCV() {
+            const cv = document.getElementById('cvUpload').value;
+            if(!cv) {
+                alert('Harap upload CV Anda terlebih dahulu!');
+                return;
+            }
+            document.getElementById('modalCV').style.display = 'none';
+            document.getElementById('modalInterview').style.display = 'block';
+        }
+
+        function finishInterview() {
+            document.getElementById('modalInterview').style.display = 'none';
+            document.getElementById('modalResult').style.display = 'block';
+        }
+
+        function resultAccepted() {
+            document.getElementById('modalResult').style.display = 'none';
+            document.getElementById('modalAdminFee').style.display = 'block';
+        }
+
+        function resultRejected() {
+            document.getElementById('modalResult').style.display = 'none';
+            showFinalAnimation(false);
+        }
+
+        function payAdminFee() {
+            // Simulasi loading pembayaran
+            const btn = document.getElementById('btnPayAdmin');
+            btn.innerHTML = 'Memproses...';
+            setTimeout(() => {
+                document.getElementById('modalAdminFee').style.display = 'none';
+                btn.innerHTML = 'Bayar Rp 150.000'; // reset
+                showFinalAnimation(true);
+            }, 1000);
+        }
+
+        function showFinalAnimation(isAccepted) {
+            const container = document.getElementById('finalAnimContent');
+            const finalModal = document.getElementById('modalFinalAnim');
+            finalModal.style.display = 'block';
+            
+            if(isAccepted) {
+                container.innerHTML = `
+                    <div class="anim-circle success anim-pop">✓</div>
+                    <h3 class="anim-text">Pembayaran Berhasil!</h3>
+                    <p class="anim-text">Selamat! Anda kini resmi menjadi bagian dari tim <strong>Home Clean Service</strong>. Kami akan segera menghubungi Anda untuk pengiriman atribut.</p>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="anim-circle failed anim-pop">✗</div>
+                    <h3 class="anim-text">Tetap Semangat!</h3>
+                    <p class="anim-text">Mohon maaf, Anda belum lulus pada tahap wawancara kali ini. Tidak perlu membayar administrasi. Jangan menyerah dan coba lagi di lain waktu!</p>
+                `;
+            }
+        }
+
+        function closeNewFlow() {
+            document.getElementById('newFlowOverlay').style.display = 'none';
+            document.getElementById('modalFinalAnim').style.display = 'none';
+            document.getElementById('cvUpload').value = '';
         }
 
         const obs = new IntersectionObserver((es) => { es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); });
         document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
     </script>
+    <div class="modal-overlay" id="newFlowOverlay" style="z-index: 3000;">
+        
+        <div class="new-step-modal" id="modalCV">
+            <h3>Tahap 1: Kirim CV</h3>
+            <p>Pendaftaran awal berhasil. Silakan upload Curriculum Vitae (CV) Anda untuk melanjutkan ke tahap wawancara.</p>
+            <input type="file" id="cvUpload" accept=".pdf,.doc,.docx" class="new-file-input">
+            <button class="btn-pesan w-100 mt-15" onclick="submitCV()">Kirim CV</button>
+        </div>
+
+        <div class="new-step-modal" id="modalInterview" style="display:none;">
+            <h3>Tahap 2: Wawancara Online</h3>
+            <p>CV Anda diterima. Silakan ikuti sesi wawancara sekarang melalui tautan di bawah ini:</p>
+            <div class="meet-link-box">
+                <a href="https://zoom.us/" target="_blank">💻 Join Zoom / Google Meet</a>
+            </div>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">*Klik tombol di bawah <strong>hanya jika</strong> Anda telah selesai mengikuti sesi wawancara.</p>
+            <button class="btn-konfirmasi w-100" onclick="finishInterview()">Saya Sudah Selesai Wawancara</button>
+        </div>
+
+        <div class="new-step-modal" id="modalResult" style="display:none;">
+            <h3>Simulasi Hasil Wawancara</h3>
+            <p>Pilih hasil wawancara untuk mendemonstrasikan sistem:</p>
+            <div class="result-btn-group mt-15">
+                <button class="btn-pesan" onclick="resultAccepted()">LULUS KETERIMA</button>
+                <button class="btn-reject" onclick="resultRejected()">TIDAK LULUS</button>
+            </div>
+        </div>
+
+        <div class="new-step-modal" id="modalAdminFee" style="display:none;">
+            <h3>Tahap 3: Biaya Administrasi</h3>
+            <p>Selamat Anda <strong>Lulus Wawancara</strong>! Silakan selesaikan pembayaran administrasi untuk pembelian atribut pekerja (Seragam, Peralatan Dasar, ID Card).</p>
+            <h2 class="admin-price">Rp 150.000</h2>
+            <button class="btn-pesan w-100" id="btnPayAdmin" onclick="payAdminFee()">Bayar Rp 150.000</button>
+        </div>
+
+        <div class="new-step-modal text-center" id="modalFinalAnim" style="display:none;">
+            <div id="finalAnimContent"></div>
+            <button class="btn-konfirmasi mt-15 w-100" onclick="closeNewFlow()">Selesai & Tutup</button>
+        </div>
+
+    </div>
 </body>
 </html>
